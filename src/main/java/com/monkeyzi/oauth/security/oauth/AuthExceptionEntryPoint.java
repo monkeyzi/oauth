@@ -1,5 +1,6 @@
 package com.monkeyzi.oauth.security.oauth;
 
+import com.monkeyzi.oauth.enums.ErrorCodeEnum;
 import com.monkeyzi.oauth.utils.ResponseJsonUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
@@ -24,7 +25,7 @@ public class AuthExceptionEntryPoint  implements AuthenticationEntryPoint {
     public void commence(HttpServletRequest httpServletRequest, HttpServletResponse response, AuthenticationException e) throws IOException, ServletException {
         log.error("没有登录,请登录认证");
         response.setStatus(HttpStatus.UNAUTHORIZED.value());
-        ResponseJsonUtil.out(response,ResponseJsonUtil.map(false,401,"请登录认证",null));
+        ResponseJsonUtil.out(response,ResponseJsonUtil.map(false,ErrorCodeEnum.GL401.getCode(),ErrorCodeEnum.GL401.getMsg(),null));
     }
 
 

@@ -1,6 +1,7 @@
 package com.monkeyzi.oauth.web.auth;
 
 import com.monkeyzi.oauth.common.R;
+import com.monkeyzi.oauth.enums.ErrorCodeEnum;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -16,7 +17,7 @@ public class RestAuthController {
     @ResponseStatus(HttpStatus.UNAUTHORIZED)
     public R needLogin(){
        log.info("需要登录");
-       return R.error(401,"请登录系统");
+       return R.error(ErrorCodeEnum.GL401.getCode(),ErrorCodeEnum.GL401.getMsg());
     }
 
 

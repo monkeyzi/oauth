@@ -1,6 +1,7 @@
 package com.monkeyzi.oauth.security.permission;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.monkeyzi.oauth.enums.ErrorCodeEnum;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.access.AccessDeniedException;
@@ -28,8 +29,8 @@ public class RestAccessDeniedHandler implements AccessDeniedHandler {
     public void handle(HttpServletRequest httpServletRequest, HttpServletResponse response, AccessDeniedException e) throws IOException, ServletException {
         log.error("对不起,该用户的请求没有权限");
         Map<String, Object> result = new HashMap<>(4);
-        result.put("code", 403);
-        result.put("msg", "抱歉,您没有访问权限！");
+        result.put("code", ErrorCodeEnum.GL403.getCode());
+        result.put("msg", ErrorCodeEnum.GL403.getMsg());
         result.put("success",false);
         result.put("data",null);
         String json = objectMapper.writeValueAsString(result);
