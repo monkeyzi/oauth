@@ -1,4 +1,4 @@
-package com.monkeyzi.oauth.security.oauth;
+package com.monkeyzi.oauth.security.permission;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.extern.slf4j.Slf4j;
@@ -26,10 +26,10 @@ public class RestAccessDeniedHandler implements AccessDeniedHandler {
     private ObjectMapper objectMapper;
     @Override
     public void handle(HttpServletRequest httpServletRequest, HttpServletResponse response, AccessDeniedException e) throws IOException, ServletException {
-        log.info("该用户的请求没有权限");
+        log.error("对不起,该用户的请求没有权限");
         Map<String, Object> result = new HashMap<>(4);
         result.put("code", 403);
-        result.put("msg", "无访问权限");
+        result.put("msg", "抱歉,您没有访问权限！");
         result.put("success",false);
         result.put("data",null);
         String json = objectMapper.writeValueAsString(result);

@@ -12,12 +12,16 @@ import org.springframework.stereotype.Component;
 import java.util.Collection;
 import java.util.Iterator;
 
+/**
+ * 权限管理决断器
+ * 判断用户拥有的权限或角色是否有资源访问权限
+ */
 @Component
 @Slf4j
 public class MyAccessDecisionManager implements AccessDecisionManager {
     @Override
     public void decide(Authentication authentication, Object o, Collection<ConfigAttribute> collection) throws AccessDeniedException, InsufficientAuthenticationException {
-
+        log.info("进入权限决断器");
         if(collection==null){
             return;
         }
@@ -32,7 +36,7 @@ public class MyAccessDecisionManager implements AccessDecisionManager {
                 }
             }
         }
-        throw new AccessDeniedException("抱歉，您没有访问权限");
+        throw new AccessDeniedException("抱歉，您没有访问权限!");
     }
 
     @Override
