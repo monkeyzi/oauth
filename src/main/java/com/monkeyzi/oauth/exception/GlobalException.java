@@ -7,10 +7,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.web.HttpMediaTypeNotSupportedException;
 import org.springframework.web.HttpRequestMethodNotSupportedException;
-import org.springframework.web.bind.annotation.ExceptionHandler;
-import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.bind.annotation.ResponseStatus;
-import org.springframework.web.bind.annotation.RestControllerAdvice;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.NoHandlerFoundException;
 
 /**
@@ -30,7 +27,7 @@ public class GlobalException {
     @ResponseStatus(HttpStatus.NOT_FOUND)
     @ResponseBody
     public R NoHandlerFoundException(NoHandlerFoundException e){
-        log.error("请求的接口资源不存在 e={}",e);
+        log.error("请求的接口资源不存在={}",e.getMessage(),e);
         return R.error(ErrorCodeEnum.GL404.getCode(),ErrorCodeEnum.GL404.getMsg());
     }
     /**
@@ -42,7 +39,7 @@ public class GlobalException {
     @ResponseStatus(HttpStatus.OK)
     @ResponseBody
     public R illegalArgumentException(IllegalArgumentException e) {
-        log.error("参数异常 e={}",e );
+        log.error("参数异常={}",e.getMessage(),e );
         return R.error(ErrorCodeEnum.GL10001.getCode(),e.getMessage());
     }
     /**

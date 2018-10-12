@@ -1,5 +1,6 @@
 package com.monkeyzi.oauth.web.auth;
 
+import com.google.common.base.Preconditions;
 import com.monkeyzi.oauth.common.R;
 import com.monkeyzi.oauth.enums.ErrorCodeEnum;
 import lombok.extern.slf4j.Slf4j;
@@ -23,6 +24,7 @@ public class RestAuthController {
 
     @RequestMapping(value = "/test")
     public R test(){
+        Preconditions.checkArgument(false,"hhhhh");
         return R.ok("ok","hhhhh");
     }
 }
