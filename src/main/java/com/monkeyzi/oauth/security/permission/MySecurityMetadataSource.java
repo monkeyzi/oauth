@@ -1,6 +1,5 @@
 package com.monkeyzi.oauth.security.permission;
 
-import com.monkeyzi.oauth.entity.Permission;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.security.access.ConfigAttribute;
@@ -18,7 +17,7 @@ import java.util.*;
  * @date: 2018/10/11 21:23
  * @qq:854152531@qq.com
  * @blog http://www.monkeyzi.xin
- * @description:权限资源管理器   为权限决策器做支持
+ * @description: 权限资源管理器   为权限决策器做支持
  */
 @Slf4j
 @Component
