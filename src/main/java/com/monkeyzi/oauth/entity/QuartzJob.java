@@ -1,12 +1,14 @@
 package com.monkeyzi.oauth.entity;
 
-import com.baomidou.mybatisplus.annotations.TableName;
 import com.monkeyzi.oauth.base.BaseEntity;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 
+import javax.persistence.Table;
+
+
 @Data
-@TableName("t_quartz_job")
+@Table(name="t_quartz_job")
 public class QuartzJob  extends BaseEntity {
     private static final long serialVersionUID = 1L;
 

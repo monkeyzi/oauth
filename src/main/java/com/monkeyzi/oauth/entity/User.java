@@ -1,6 +1,5 @@
 package com.monkeyzi.oauth.entity;
 
-import com.baomidou.mybatisplus.annotations.TableField;
 import com.monkeyzi.oauth.base.BaseEntity;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
@@ -48,15 +47,12 @@ public class User extends BaseEntity {
     @ApiModelProperty(value = "所属部门id")
     private String departmentId;
 
-    @TableField(exist=false)
     @ApiModelProperty(value = "所属部门名称")
     private String departmentTitle;
 
-    @TableField(exist=false)
     @ApiModelProperty(value = "用户拥有角色")
     private List<Role> roles;
 
-    @TableField(exist=false)
     @ApiModelProperty(value = "用户拥有的权限")
     private List<Permission> permissions;
 }

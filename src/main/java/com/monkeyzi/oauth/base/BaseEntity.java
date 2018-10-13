@@ -1,6 +1,5 @@
 package com.monkeyzi.oauth.base;
 
-import com.baomidou.mybatisplus.annotations.TableId;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.monkeyzi.oauth.utils.SnowFlakeUtil;
 import io.swagger.annotations.ApiModelProperty;
@@ -18,7 +17,6 @@ public abstract class BaseEntity implements Serializable {
     private static final long serialVersionUID = 1L;
 
     @Id
-    @TableId
     @ApiModelProperty(value = "唯一标识")
     private String id = String.valueOf(SnowFlakeUtil.getFlowIdInstance().nextId());
 
