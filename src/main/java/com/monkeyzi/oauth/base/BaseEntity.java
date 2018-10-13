@@ -1,14 +1,15 @@
 package com.monkeyzi.oauth.base;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
-import com.monkeyzi.oauth.utils.SnowFlakeUtil;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 import org.springframework.data.annotation.CreatedDate;
-import org.springframework.data.annotation.Id;
 import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.format.annotation.DateTimeFormat;
 
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
 import java.io.Serializable;
 import java.util.Date;
 
@@ -17,8 +18,9 @@ public abstract class BaseEntity implements Serializable {
     private static final long serialVersionUID = 1L;
 
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @ApiModelProperty(value = "唯一标识")
-    private String id = String.valueOf(SnowFlakeUtil.getFlowIdInstance().nextId());
+    private String id;
 
     @ApiModelProperty(value = "创建者")
     private String createBy;
@@ -39,5 +41,5 @@ public abstract class BaseEntity implements Serializable {
     private Date updateTime;
 
     @ApiModelProperty(value = "删除标志 默认0")
-    private Integer delFlag = 0;
+    private Integer delFlag;
 }

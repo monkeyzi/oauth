@@ -3,11 +3,13 @@ package com.monkeyzi.oauth.entity;
 import com.monkeyzi.oauth.base.BaseEntity;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
+import org.apache.ibatis.type.Alias;
 
 import javax.persistence.Table;
 
 @Data
 @Table(name = "t_permission")
+@Alias(value = "permission")
 public class Permission extends BaseEntity {
     private static final long serialVersionUID = 1L;
 
