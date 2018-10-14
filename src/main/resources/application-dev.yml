@@ -91,6 +91,9 @@ monkeyzi:
           clientSecret: monkeyziClientSecret
           accessTokenValidateSeconds: 7200
           scope: "*"
+      brower:
+        # 记住我功能 7day
+        rememberMeSeconds: 604800
    task:
       corePoolSize: 5
       maxPoolSize: 50

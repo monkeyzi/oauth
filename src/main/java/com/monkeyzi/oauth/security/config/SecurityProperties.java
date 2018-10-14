@@ -14,4 +14,8 @@ public class SecurityProperties {
      * OAuth2认证服务器配置
      */
     private OAuth2Properties oauth2 = new OAuth2Properties();
+    /**
+     * 浏览器配置
+     */
+    private BrowerProperties brower=new BrowerProperties();
 }

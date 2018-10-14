@@ -69,7 +69,7 @@ public class GlobalException {
     }
 
     /**
-     * 请求的json格式不正确
+     * bad request
      * @param e
      * @return
      */

@@ -1,9 +1,11 @@
 package com.monkeyzi.oauth.security.oauth;
 
 import com.monkeyzi.oauth.security.config.IgnoredUrlsProperties;
+import com.monkeyzi.oauth.security.config.SecurityProperties;
 import com.monkeyzi.oauth.security.permission.MyFilterSecurityInterceptor;
 import com.monkeyzi.oauth.security.permission.RestAccessDeniedHandler;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configurers.ExpressionUrlAuthorizationConfigurer;
@@ -12,6 +14,10 @@ import org.springframework.security.oauth2.config.annotation.web.configuration.E
 import org.springframework.security.oauth2.config.annotation.web.configuration.ResourceServerConfigurerAdapter;
 import org.springframework.security.oauth2.config.annotation.web.configurers.ResourceServerSecurityConfigurer;
 import org.springframework.security.web.access.intercept.FilterSecurityInterceptor;
+import org.springframework.security.web.authentication.rememberme.JdbcTokenRepositoryImpl;
+import org.springframework.security.web.authentication.rememberme.PersistentTokenRepository;
+
+import javax.sql.DataSource;
 
 /**
  * @author: 高yg
@@ -37,6 +43,21 @@ public class AuthorizationResourceServer  extends ResourceServerConfigurerAdapte
     @Autowired
     private MyFilterSecurityInterceptor myFilterSecurityInterceptor;
 
+    @Autowired
+    private DataSource dataSource;
+    @Autowired
+    private SecurityProperties  securityProperties;
+
+    /**
+     * 记住我功能token存储器
+     * * @return
+     */
+    @Bean
+    public PersistentTokenRepository persistentTokenRepository() {
+        JdbcTokenRepositoryImpl tokenRepository = new JdbcTokenRepositoryImpl();
+        tokenRepository.setDataSource(dataSource);
+        return tokenRepository;
+    }
     @Override
     public void configure(HttpSecurity http) throws Exception {
         ExpressionUrlAuthorizationConfigurer<HttpSecurity>.ExpressionInterceptUrlRegistry registry = http
@@ -63,6 +84,12 @@ public class AuthorizationResourceServer  extends ResourceServerConfigurerAdapte
                 .and()
                 .logout()
                 .permitAll()
+                .and()
+                .rememberMe()
+                //设置操作表的Repository
+                .tokenRepository(persistentTokenRepository())
+                //设置记住我的时间为7天
+                .tokenValiditySeconds(securityProperties.getBrower().getRememberMeSeconds())
                 .and()
                 .authorizeRequests()
                 //任何请求
