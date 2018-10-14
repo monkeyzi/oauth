@@ -11,8 +11,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.util.List;
-
 @Slf4j
 @RestController
 @RequestMapping(value = "/auth")
@@ -33,8 +31,8 @@ public class RestAuthController {
     public R test(){
         //Preconditions.checkArgument(false,"hhhhh");
         System.out.println("111");
-        List<Permission> list=permissionService.selectAll();
+        Permission permission=permissionService.selectByKey("11");
 
-        return R.ok("ok",list);
+        return R.ok("ok",permission);
     }
 }

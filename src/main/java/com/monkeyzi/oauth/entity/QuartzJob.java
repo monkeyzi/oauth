@@ -8,7 +8,7 @@ import javax.persistence.Table;
 
 
 @Data
-@Table(name="t_quartz_job")
+@Table(name="m_quartz_job")
 public class QuartzJob  extends BaseEntity {
     private static final long serialVersionUID = 1L;
 
@@ -25,5 +25,5 @@ public class QuartzJob  extends BaseEntity {
     private String description;
 
     @ApiModelProperty(value = "状态 0正常 -1停止")
-    private Integer status = 0;
+    private Integer status;
 }

@@ -36,7 +36,7 @@ public class PermissionServiceTest extends OauthApplicationTests {
 
     @Test
     public void test3(){
-        Permission permission=permissionService.selectByKey("16392767785668608");
+        Permission permission=permissionService.selectByKey("11");
         System.out.println(permission);
     }
 }
