@@ -4,6 +4,7 @@ import com.monkeyzi.oauth.security.config.IgnoredUrlsProperties;
 import com.monkeyzi.oauth.security.config.SecurityProperties;
 import com.monkeyzi.oauth.security.permission.MyFilterSecurityInterceptor;
 import com.monkeyzi.oauth.security.permission.RestAccessDeniedHandler;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -28,6 +29,7 @@ import javax.sql.DataSource;
  */
 @Configuration
 @EnableResourceServer
+@Slf4j
 public class AuthorizationResourceServer  extends ResourceServerConfigurerAdapter {
     @Autowired
     private IgnoredUrlsProperties ignoredUrlsProperties;
@@ -54,6 +56,7 @@ public class AuthorizationResourceServer  extends ResourceServerConfigurerAdapte
      */
     @Bean
     public PersistentTokenRepository persistentTokenRepository() {
+       log.info("初始化 token 记住我功能");
         JdbcTokenRepositoryImpl tokenRepository = new JdbcTokenRepositoryImpl();
         tokenRepository.setDataSource(dataSource);
         return tokenRepository;
