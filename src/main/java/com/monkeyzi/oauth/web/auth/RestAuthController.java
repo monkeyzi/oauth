@@ -2,16 +2,17 @@ package com.monkeyzi.oauth.web.auth;
 
 import com.monkeyzi.oauth.common.R;
 import com.monkeyzi.oauth.entity.Permission;
+import com.monkeyzi.oauth.entity.dto.LogDto;
 import com.monkeyzi.oauth.enums.ErrorCodeEnum;
+import com.monkeyzi.oauth.service.LogService;
 import com.monkeyzi.oauth.service.PermissionService;
+import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.task.TaskExecutor;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.http.HttpStatus;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseStatus;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
 
@@ -19,6 +20,8 @@ import javax.annotation.Resource;
 @RestController
 @RequestMapping(value = "/auth")
 public class RestAuthController {
+    @Autowired
+    private LogService logService;
 
     @Autowired
     private RedisTemplate redisTemplate;
@@ -51,5 +54,13 @@ public class RestAuthController {
             log.info("我是异步任务");
         });
         return R.ok("ok",permission);
+    }
+
+
+    @PostMapping(value = "/saveLog")
+    @ApiOperation(httpMethod = "POST", value = "记录操作日志")
+    public Integer saveLog(@RequestBody LogDto logDto) {
+        log.info("saveLog - 保存操作日志. logDto={}", logDto);
+        return logService.saveLog(logDto);
     }
 }

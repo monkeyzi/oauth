@@ -1,4 +1,4 @@
-package com.monkeyzi.oauth.web;
+package com.monkeyzi.oauth.web.job;
 
 import com.monkeyzi.oauth.common.R;
 import org.springframework.web.bind.annotation.RequestMapping;
