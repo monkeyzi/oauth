@@ -7,6 +7,8 @@ jasypt:
     password: monkeyzi
 
 spring:
+  application:
+    name: monkeyzi
   profiles:
      active: dev
   mvc:

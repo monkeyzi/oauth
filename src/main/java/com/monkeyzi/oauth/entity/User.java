@@ -75,7 +75,7 @@ public class User extends BaseEntity {
 
     @Transient
     @ApiModelProperty(value = "所属部门名称")
-    private String departmentTitle;
+    private String departmentName;
 
     @Transient
     @ApiModelProperty(value = "用户拥有角色")
