@@ -2,11 +2,13 @@ package com.monkeyzi.oauth.entity.dto;
 
 import com.monkeyzi.oauth.base.BaseEntity;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 
 import java.io.Serializable;
 import java.util.Date;
 
 @Data
+@EqualsAndHashCode(callSuper = false)
 public class LogDto extends BaseEntity implements Serializable {
 
     private static final long serialVersionUID = 1L;

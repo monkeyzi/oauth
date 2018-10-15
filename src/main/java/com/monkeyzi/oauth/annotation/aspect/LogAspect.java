@@ -1,13 +1,12 @@
 package com.monkeyzi.oauth.annotation.aspect;
 
+import com.alibaba.fastjson.JSON;
 import com.monkeyzi.oauth.annotation.LogAnnotation;
 import com.monkeyzi.oauth.common.R;
 import com.monkeyzi.oauth.entity.dto.LogDto;
 import com.monkeyzi.oauth.entity.dto.LoginAuthDto;
-import com.monkeyzi.oauth.utils.JacksonUtil;
-import com.monkeyzi.oauth.utils.PublicUtil;
-import com.monkeyzi.oauth.utils.RequestUtils;
-import com.monkeyzi.oauth.utils.SnowFlakeUtil;
+import com.monkeyzi.oauth.enums.LogTypeEnum;
+import com.monkeyzi.oauth.utils.*;
 import eu.bitwalker.useragentutils.UserAgent;
 import lombok.extern.slf4j.Slf4j;
 import org.aspectj.lang.JoinPoint;
@@ -23,6 +22,7 @@ import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import java.lang.reflect.Method;
 import java.util.Date;
+import java.util.Map;
 
 @Slf4j
 @Component
@@ -58,13 +58,21 @@ public class LogAspect {
      */
     @AfterReturning(pointcut = "LogAnnotation()", returning = "returnValue")
     public void doAfter(final JoinPoint joinPoint, final Object returnValue){
-          if (returnValue instanceof R){
+            LogAnnotation iFlog=giveController(joinPoint);
+            if (iFlog==null){
+                return;
+            }
+            //这里主要是为了区分登录还是其他操作
+            if (iFlog!=null&&iFlog.logType().getType().equals(LogTypeEnum.LOGIN_LOG.getType())){
+                this.handlerLog(joinPoint,null);
+            }
+            if (returnValue instanceof R){
               R result= (R) returnValue;
               //只有响应结果不为空并且成功响应才记录
               if (!PublicUtil.isEmpty(result)&&result.getCode().equals(R.ok().getCode())){
                  this.handlerLog(joinPoint,result);
               }
-          }
+           }
 
     }
 
@@ -122,7 +130,7 @@ public class LogAspect {
             //执行保存
             taskExecutor.execute(()->{
                 log.info("开始保存日志");
-                this.restTemplate.postForObject("http://monkeyzi/auth/saveLog",
+                this.restTemplate.postForObject("http://127.0.0.1:8888/auth/saveLog",
                         logDto, Integer.class);
             });
 
@@ -141,13 +149,19 @@ public class LogAspect {
     private void doRequestAndResponse(LogAnnotation relog, LogDto logDto, Object result, JoinPoint joinPoint) {
 
         if (relog.isSaveRequestData()) {
-            setRequestData(logDto, joinPoint);
+            if (relog.logType().getType().equals(LogTypeEnum.LOGIN_LOG.getType())){
+                setRequestDataNotJson(logDto);
+            }else {
+                setJsonRequestData(logDto, joinPoint);
+            }
         }
         if (relog.isSaveResponseData()) {
             setResponseData(logDto, result);
         }
     }
-
+    /**
+     *
+     */
     /**
      * 设置响应数据
      * @param requestLog
@@ -155,18 +169,35 @@ public class LogAspect {
      */
     private void setResponseData(LogDto requestLog, Object result) {
         try {
-            requestLog.setResponseData(String.valueOf(result));
+            if (result!=null){
+                requestLog.setResponseData(String.valueOf(JacksonUtil.obj2String(result)));
+            }else {
+                requestLog.setResponseData("");
+            }
+
         } catch (Exception e) {
             log.error("获取响应数据,出现错误={}", e.getMessage(), e);
         }
     }
 
     /**
-     * 设置请求数据
+     * 设置非json格式请求数据
+     * @param logDto
+     */
+    private void setRequestDataNotJson(LogDto logDto) {
+        try {
+            Map<String,String[]> logParams=RequestUtils.getRequest().getParameterMap();
+            logDto.setRequestData(ObjectUtil.mapToString(logParams));
+        } catch (Exception e) {
+            log.error("获取请求数据,出现错误={}", e.getMessage(), e);
+        }
+    }
+    /**
+     * 设置请求数据----json格式数据
      * @param logDto
      * @param joinPoint
      */
-    private void setRequestData(LogDto logDto, JoinPoint joinPoint) {
+    private void setJsonRequestData(LogDto logDto, JoinPoint joinPoint) {
 
         try {
             Object[] args = joinPoint.getArgs();
@@ -175,14 +206,10 @@ public class LogAspect {
             }
             Object[] parameter = new Object[args.length];
             int index = 0;
-            for (Object object : parameter) {
-                if (object instanceof HttpServletRequest) {
-                    continue;
-                }
-                parameter[index] = object;
+            for (Object o:args){
+                parameter[index] = o;
                 index++;
             }
-
             String requestData = JacksonUtil.obj2String(parameter);
 
             if (requestData.length() > MAX_SIZE) {
@@ -190,7 +217,7 @@ public class LogAspect {
             }
             logDto.setRequestData(requestData);
         } catch (Exception e) {
-            log.error("获取响应数据,出现错误={}", e.getMessage(), e);
+            log.error("获取请求数据,出现错误={}", e.getMessage(), e);
         }
     }
 

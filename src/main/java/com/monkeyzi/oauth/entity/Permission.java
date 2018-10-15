@@ -3,11 +3,12 @@ package com.monkeyzi.oauth.entity;
 import com.monkeyzi.oauth.base.BaseEntity;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 import org.apache.ibatis.type.Alias;
 
 import javax.persistence.Table;
 import java.math.BigDecimal;
-
+@EqualsAndHashCode(callSuper = false)
 @Data
 @Table(name = "m_permission")
 @Alias(value = "permission")

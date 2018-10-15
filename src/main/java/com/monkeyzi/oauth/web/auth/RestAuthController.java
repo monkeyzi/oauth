@@ -1,8 +1,10 @@
 package com.monkeyzi.oauth.web.auth;
 
+import com.monkeyzi.oauth.annotation.LogAnnotation;
 import com.monkeyzi.oauth.common.R;
 import com.monkeyzi.oauth.entity.Permission;
 import com.monkeyzi.oauth.entity.dto.LogDto;
+import com.monkeyzi.oauth.entity.param.UserDto;
 import com.monkeyzi.oauth.enums.ErrorCodeEnum;
 import com.monkeyzi.oauth.service.LogService;
 import com.monkeyzi.oauth.service.PermissionService;
@@ -41,12 +43,13 @@ public class RestAuthController {
 
 
     @RequestMapping(value = "/test")
-    public R test(){
+    @LogAnnotation
+    public R test(@RequestBody UserDto userDto){
         System.out.println("111");
         Permission permission=permissionService.selectByKey("11");
-        redisTemplate.opsForValue().set("高艳国","ghuoguo");
-        String value= (String) redisTemplate.opsForValue().get("高艳国");
-        System.out.println(value);
+        //redisTemplate.opsForValue().set("高艳国","ghuoguo");
+        //String value= (String) redisTemplate.opsForValue().get("高艳国");
+        //System.out.println(value);
 
         taskExecutor.execute(()->{
             String name=Thread.currentThread().getName();

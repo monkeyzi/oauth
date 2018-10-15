@@ -3,12 +3,14 @@ package com.monkeyzi.oauth.entity;
 import com.monkeyzi.oauth.base.BaseEntity;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 
 import javax.persistence.Table;
 
 
 @Data
 @Table(name="m_quartz_job")
+@EqualsAndHashCode(callSuper = false)
 public class QuartzJob  extends BaseEntity {
     private static final long serialVersionUID = 1L;
 
