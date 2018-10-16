@@ -3,7 +3,7 @@ package com.monkeyzi.oauth.utils;
 import com.arronlong.httpclientutil.HttpClientUtil;
 import com.arronlong.httpclientutil.common.HttpConfig;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.monkeyzi.oauth.entity.dto.daode.GaodeLocation;
+import com.monkeyzi.oauth.entity.dto.gaode.GaodeLocation;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;

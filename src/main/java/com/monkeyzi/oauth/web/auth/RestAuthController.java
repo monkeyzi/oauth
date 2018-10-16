@@ -5,7 +5,7 @@ import com.monkeyzi.oauth.annotation.ValidateAnnotation;
 import com.monkeyzi.oauth.common.R;
 import com.monkeyzi.oauth.entity.domain.Permission;
 import com.monkeyzi.oauth.entity.dto.LogDto;
-import com.monkeyzi.oauth.entity.dto.daode.GaodeLocation;
+import com.monkeyzi.oauth.entity.dto.gaode.GaodeLocation;
 import com.monkeyzi.oauth.entity.param.UserDto;
 import com.monkeyzi.oauth.enums.ErrorCodeEnum;
 import com.monkeyzi.oauth.service.LogService;

@@ -2,7 +2,7 @@ package com.monkeyzi.oauth.service.impl;
 
 import com.google.common.base.Preconditions;
 import com.monkeyzi.oauth.common.GlobalConstant;
-import com.monkeyzi.oauth.entity.dto.daode.GaodeLocation;
+import com.monkeyzi.oauth.entity.dto.gaode.GaodeLocation;
 import com.monkeyzi.oauth.service.CommonService;
 import com.monkeyzi.oauth.utils.GaodeUtils;
 import lombok.extern.slf4j.Slf4j;

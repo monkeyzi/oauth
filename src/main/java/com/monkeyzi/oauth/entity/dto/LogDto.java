@@ -8,7 +8,7 @@ import java.io.Serializable;
 import java.util.Date;
 
 @Data
-@EqualsAndHashCode(callSuper = false)
+@EqualsAndHashCode(callSuper = true)
 public class LogDto extends BaseEntity implements Serializable {
 
     private static final long serialVersionUID = 1L;

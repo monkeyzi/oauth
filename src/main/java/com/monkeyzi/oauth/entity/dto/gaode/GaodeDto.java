@@ -1,4 +1,4 @@
-package com.monkeyzi.oauth.entity.dto.daode;
+package com.monkeyzi.oauth.entity.dto.gaode;
 
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
