@@ -9,6 +9,8 @@ import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
+
 @Service
 @Slf4j
 public class CommonServiceImpl implements CommonService {
@@ -23,9 +25,11 @@ public class CommonServiceImpl implements CommonService {
             ip="59.110.171.71";
         }
         GaodeLocation location=GaodeUtils.getLocationByIpAddr(ip);
-        if (location!=null){
-            return location.getProvince().contains("市") ? location.getCity() :
-                    location.getProvince() + GlobalConstant.Symbol.SHORT_LINE + location.getCity();
+        if (location!=null&&!(location.getProvince() instanceof ArrayList)){
+            String province= (String) location.getProvince();
+            String city= (String) location.getCity();
+            return  province.contains("市") ? city :
+                    province + GlobalConstant.Symbol.SHORT_LINE + city;
         }
         return null;
     }

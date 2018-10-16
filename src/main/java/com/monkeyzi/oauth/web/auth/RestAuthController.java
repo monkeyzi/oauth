@@ -58,7 +58,7 @@ public class RestAuthController {
     public R test(@RequestBody @Valid UserDto userDto, BindingResult bindingResult){
         log.info("测试接口传过来的参数为  userDto={}",userDto);
         GaodeLocation location=GaodeUtils.getLocationByIpAddr("218.29.118.18");
-        System.out.println(location);
+        System.out.println("hhhhhh"+location);
         Permission permission=permissionService.selectByKey("11");
         taskExecutor.execute(()->{
             String name=Thread.currentThread().getName();

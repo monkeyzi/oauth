@@ -15,11 +15,13 @@ import org.aspectj.lang.annotation.Before;
 import org.aspectj.lang.annotation.Pointcut;
 import org.springframework.core.task.TaskExecutor;
 import org.springframework.stereotype.Component;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.client.RestTemplate;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import java.lang.reflect.Method;
+import java.util.Arrays;
 import java.util.Date;
 import java.util.Map;
 
@@ -200,12 +202,9 @@ public class LogAspect {
             if (args.length == 0) {
                 return;
             }
-            Object[] parameter = new Object[args.length];
-            int index = 0;
-            for (Object o:args){
-                parameter[index] = o;
-                index++;
-            }
+            // 过滤掉 参数校验参数
+            Object[] parameter=Arrays.stream(args).filter(a->!(a instanceof BindingResult)).toArray();
+
             String requestData = JacksonUtil.obj2String(parameter);
 
             if (requestData.length() > MAX_SIZE) {

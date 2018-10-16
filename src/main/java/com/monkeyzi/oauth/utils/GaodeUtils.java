@@ -46,8 +46,5 @@ public class GaodeUtils {
         GaodeUtils.key = key;
     }
 
-    public static void main(String[] args) {
-        GaodeLocation location=getLocationByIpAddr("218.29.118.18");
-        System.out.println(location);
-    }
+
 }

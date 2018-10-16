@@ -5,13 +5,13 @@ import lombok.EqualsAndHashCode;
 
 @Data
 @EqualsAndHashCode(callSuper = true)
-public class GaodeLocation extends GaodeDto {
+public class GaodeLocation<T> extends GaodeDto {
 
-    private String province;
+    private T province;
 
-    private String city;
+    private T city;
 
-    private String adcode;
+    private T adcode;
 
-    private String rectangle;
+    private T rectangle;
 }
