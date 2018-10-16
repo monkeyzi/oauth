@@ -29,5 +29,6 @@ public class GlobalConstant {
 
       public static final String COMMA = ",";
       public static final String MH = ":";
+      public final static String SHORT_LINE = "-";
     }
 }

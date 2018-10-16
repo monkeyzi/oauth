@@ -188,4 +188,7 @@ public interface BaseService<T> {
      * @return the list
      */
     List<T> selectByExampleAndRowBounds(Object example, RowBounds rowBounds);
+
+
+
 }

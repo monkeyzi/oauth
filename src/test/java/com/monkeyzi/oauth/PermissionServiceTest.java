@@ -1,6 +1,6 @@
 package com.monkeyzi.oauth;
 
-import com.monkeyzi.oauth.entity.Permission;
+import com.monkeyzi.oauth.entity.domain.Permission;
 import com.monkeyzi.oauth.service.PermissionService;
 import org.apache.ibatis.session.RowBounds;
 import org.junit.Test;

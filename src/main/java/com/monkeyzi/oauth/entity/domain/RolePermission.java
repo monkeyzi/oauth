@@ -1,4 +1,4 @@
-package com.monkeyzi.oauth.entity;
+package com.monkeyzi.oauth.entity.domain;
 
 import com.monkeyzi.oauth.base.BaseEntity;
 import io.swagger.annotations.ApiModelProperty;

@@ -1,7 +1,7 @@
 package com.monkeyzi.oauth.entity.dto;
 
-import com.monkeyzi.oauth.entity.Permission;
-import com.monkeyzi.oauth.entity.Role;
+import com.monkeyzi.oauth.entity.domain.Permission;
+import com.monkeyzi.oauth.entity.domain.Role;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;

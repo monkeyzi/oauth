@@ -1,7 +1,7 @@
 package com.monkeyzi.oauth.mapper;
 
 import com.monkeyzi.oauth.base.mybatis.MyMapper;
-import com.monkeyzi.oauth.entity.Permission;
+import com.monkeyzi.oauth.entity.domain.Permission;
 import org.apache.ibatis.annotations.Mapper;
 import org.springframework.stereotype.Component;
 

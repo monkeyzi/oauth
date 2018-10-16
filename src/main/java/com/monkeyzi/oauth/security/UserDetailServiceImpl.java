@@ -1,9 +1,8 @@
 package com.monkeyzi.oauth.security;
 
 import com.google.common.collect.Lists;
-import com.monkeyzi.oauth.entity.User;
+import com.monkeyzi.oauth.entity.domain.User;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;

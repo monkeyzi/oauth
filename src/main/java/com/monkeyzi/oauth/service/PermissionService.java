@@ -1,7 +1,9 @@
 package com.monkeyzi.oauth.service;
 
 import com.monkeyzi.oauth.base.service.BaseService;
-import com.monkeyzi.oauth.entity.Permission;
+import com.monkeyzi.oauth.entity.domain.Permission;
+
+import java.util.List;
 
 /**
  * @author: 高yg
@@ -11,4 +13,18 @@ import com.monkeyzi.oauth.entity.Permission;
  * @description:
  */
 public interface PermissionService extends BaseService<Permission> {
+
+    /**
+     * 根据权限类型查询权限信息
+     * @param type
+     * @return
+     */
+    List<Permission> selectPermissionByType(Integer type);
+
+    /**
+     * 根据请求url匹配权限
+     * @param requestUrl
+     * @return
+     */
+    Permission  matchUrl(String requestUrl);
 }

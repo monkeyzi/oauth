@@ -1,6 +1,5 @@
 package com.monkeyzi.oauth.annotation.aspect;
 
-import com.alibaba.fastjson.JSON;
 import com.monkeyzi.oauth.annotation.LogAnnotation;
 import com.monkeyzi.oauth.common.R;
 import com.monkeyzi.oauth.entity.dto.LogDto;
@@ -100,15 +99,12 @@ public class LogAspect {
             final String browser=userAgent.getBrowser().getName();
             //ip
             final String ipAddress = RequestUtils.getRemoteAddr(request);
-            //地理位置
-            final String location="";
             //预留---mac地址
             final String mac="";
             LogDto logDto=new LogDto();
             logDto.setBrowser(browser);
             logDto.setOs(os);
             logDto.setIp(ipAddress);
-            logDto.setLocation(location);
             logDto.setDeptId(loginAuthDto.getDepartmentId());
             logDto.setDeptName(loginAuthDto.getDepartmentName());
             logDto.setMac(mac);
@@ -120,7 +116,7 @@ public class LogAspect {
             logDto.setCreateBy(loginAuthDto.getUserName());
             logDto.setCreateTime(new Date());
             logDto.setUpdateBy(loginAuthDto.getUserName());
-            logDto.setCreateTime(new Date());
+            logDto.setUpdateTime(new Date());
             logDto.setStartTime(startTime);
             logDto.setEndTime(endTime);
             logDto.setExcuteTime(endTime.getTime() - startTime.getTime());
@@ -163,7 +159,7 @@ public class LogAspect {
      *
      */
     /**
-     * 设置响应数据
+     * 设置响应数据---普通请求
      * @param requestLog
      * @param result
      */
@@ -193,7 +189,7 @@ public class LogAspect {
         }
     }
     /**
-     * 设置请求数据----json格式数据
+     * 设置请求数据----json格式数据请求
      * @param logDto
      * @param joinPoint
      */

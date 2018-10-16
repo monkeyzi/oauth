@@ -21,6 +21,14 @@ public class LogDto extends BaseEntity implements Serializable {
      */
     private String deptName;
     /**
+     * 权限Id
+     */
+    private String permissionId;
+    /**
+     * 权限名
+     */
+    private String permissionName;
+    /**
      * 日志类型
      */
     private String logType;
@@ -84,5 +92,9 @@ public class LogDto extends BaseEntity implements Serializable {
      * 请求耗时
      */
     private Long excuteTime;
+    /**
+     * 状态
+     */
+    private Integer status;
 
 }

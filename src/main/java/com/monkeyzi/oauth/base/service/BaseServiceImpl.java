@@ -1,6 +1,7 @@
 package com.monkeyzi.oauth.base.service;
 
 import com.monkeyzi.oauth.exception.BusinessException;
+import com.monkeyzi.oauth.utils.SnowFlakeUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.ibatis.session.RowBounds;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -136,5 +137,13 @@ public abstract class BaseServiceImpl<T> implements BaseService<T> {
     @Override
     public List<T> selectByRowBounds(T record, RowBounds rowBounds) {
         return mapper.selectByRowBounds(record,rowBounds);
+    }
+
+    /**
+     * 获取Id
+     * @return
+     */
+    protected String  generateId(){
+       return String.valueOf(SnowFlakeUtil.getFlowIdInstance().nextId());
     }
 }
