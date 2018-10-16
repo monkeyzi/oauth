@@ -9,7 +9,7 @@ import javax.persistence.Transient;
 import java.util.List;
 
 @Data
-@EqualsAndHashCode(callSuper = false)
+@EqualsAndHashCode(callSuper = true)
 public class User extends BaseEntity {
 
     private static final long serialVersionUID = 1L;

@@ -10,7 +10,7 @@ import javax.persistence.Table;
 
 @Data
 @Table(name="m_quartz_job")
-@EqualsAndHashCode(callSuper = false)
+@EqualsAndHashCode(callSuper = true)
 public class QuartzJob  extends BaseEntity {
     private static final long serialVersionUID = 1L;
 

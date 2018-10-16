@@ -16,7 +16,7 @@ import javax.persistence.Table;
  */
 @Data
 @Table(name = "m_role_permission")
-@EqualsAndHashCode(callSuper = false)
+@EqualsAndHashCode(callSuper = true)
 public class RolePermission extends BaseEntity {
 
     private static final long serialVersionUID = 1L;

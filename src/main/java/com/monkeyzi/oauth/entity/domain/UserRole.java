@@ -3,6 +3,7 @@ package com.monkeyzi.oauth.entity.domain;
 import com.monkeyzi.oauth.base.BaseEntity;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 
 import javax.persistence.Table;
 import javax.persistence.Transient;
@@ -16,6 +17,7 @@ import javax.persistence.Transient;
  */
 @Data
 @Table(name = "m_user_role")
+@EqualsAndHashCode(callSuper = true)
 public class UserRole extends BaseEntity {
     private static final long serialVersionUID = 1L;
 

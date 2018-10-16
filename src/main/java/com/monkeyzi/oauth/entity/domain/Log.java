@@ -12,7 +12,7 @@ import javax.persistence.Table;
 import java.util.Date;
 
 @Data
-@EqualsAndHashCode(callSuper = false)
+@EqualsAndHashCode(callSuper = true)
 @ApiModel(value = "日志")
 @Table(name = "m_log")
 public class Log extends BaseEntity {

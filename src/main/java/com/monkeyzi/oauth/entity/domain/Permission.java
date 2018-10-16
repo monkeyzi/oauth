@@ -8,7 +8,7 @@ import org.apache.ibatis.type.Alias;
 
 import javax.persistence.Table;
 import java.math.BigDecimal;
-@EqualsAndHashCode(callSuper = false)
+@EqualsAndHashCode(callSuper = true)
 @Data
 @Table(name = "m_permission")
 @Alias(value = "permission")
