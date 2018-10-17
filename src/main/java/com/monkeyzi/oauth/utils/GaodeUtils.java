@@ -16,13 +16,23 @@ import org.springframework.stereotype.Component;
 public class GaodeUtils {
 
 
-  private static String key;
+    private static String key;
+
+    public  String getKey() {
+        return key;
+    }
+
+    @Value("${monkeyzi.gaode.key}")
+    public  void setKey(String key) {
+        GaodeUtils.key = key;
+    }
+
     /**
      * 根据ip获取位置信息
      * @param ipAddr
      * @return
      */
-  public static GaodeLocation  getLocationByIpAddr(String ipAddr){
+    public static GaodeLocation  getLocationByIpAddr(String ipAddr){
       log.info("根据ip定位. ipAddr={}", ipAddr);
       GaodeLocation location = null;
       String urlAddressIp = "http://restapi.amap.com/v3/ip?key="+key+"&ip=%s";
@@ -35,16 +45,8 @@ public class GaodeUtils {
       }
       log.info("getLocationByIpAddr - 根据IP定位. ipAddr={}, location={}", ipAddr, location);
       return location;
-  }
-
-    public  String getKey() {
-        return key;
     }
 
-    @Value("${monkeyzi.gaode.key}")
-    public  void setKey(String key) {
-        GaodeUtils.key = key;
-    }
 
 
 }
