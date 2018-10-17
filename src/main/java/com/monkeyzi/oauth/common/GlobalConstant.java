@@ -15,6 +15,20 @@ public class GlobalConstant {
    public static final String LOCALHOST_IP_16 = "0:0:0:0:0:0:0:1";
    public static final int MAX_IP_LENGTH = 15;
 
+
+   /**
+    * 系统常量
+    */
+   public static final  class Sys{
+
+      private Sys(){
+
+      }
+
+      public static final String CURRENT_AUTH_USER="CURRENT_AUTH_USER";
+
+
+   }
    /**
     * 符号
     */

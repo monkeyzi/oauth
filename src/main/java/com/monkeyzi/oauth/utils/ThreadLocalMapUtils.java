@@ -21,7 +21,7 @@ public class ThreadLocalMapUtils {
      * @param key
      * @param object
      */
-   private static void put(String key,Object object){
+    public static void put(String key,Object object){
        getThreadContextMap().put(key, object);
    }
 
@@ -30,7 +30,7 @@ public class ThreadLocalMapUtils {
      * @param key
      * @return
      */
-    private static Object remove(String key){
+    public static Object remove(String key){
         return getThreadContextMap().remove(key);
     }
 
@@ -39,7 +39,7 @@ public class ThreadLocalMapUtils {
      * @param key
      * @return
      */
-    private static Object get(String key){
+    public static Object get(String key){
         return getThreadContextMap().get(key);
     }
 
@@ -47,7 +47,7 @@ public class ThreadLocalMapUtils {
      * 取得 Thread context实例
      * @return
      */
-   private static Map<String,Object> getThreadContextMap(){
+    public static Map<String,Object> getThreadContextMap(){
        return THREAD_CONTEXT.get();
    }
 
