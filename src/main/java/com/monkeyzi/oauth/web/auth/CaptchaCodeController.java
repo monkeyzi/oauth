@@ -53,6 +53,7 @@ public class CaptchaCodeController extends BaseController {
     @RequestMapping(value = "/draw/{captchaId}")
     @ApiOperation(httpMethod = "GET",value = "根据验证码Id生成图片验证码")
     public  void  drawCaptcha(@PathVariable("captchaId") String captchaId, HttpServletResponse response) throws IOException {
+        log.info("生成验证码的参数为  captchaId={}",captchaId);
         //得到验证码 生成指定验证码
         String code= (String) redisTemplate.opsForValue().get(captchaId);
         if (StringUtils.isEmpty(code)){

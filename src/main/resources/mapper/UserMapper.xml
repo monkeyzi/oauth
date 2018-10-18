@@ -1,0 +1,124 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.monkeyzi.oauth.mapper.UserMapper">
+
+  <resultMap id="BaseResultMap" type="user">
+      <id column="id" jdbcType="VARCHAR" property="id"/>
+      <result column="user_name" jdbcType="VARCHAR" property="username"/>
+      <result column="password" jdbcType="VARCHAR" property="password"/>
+      <result column="user_code" jdbcType="VARCHAR" property="userCode"/>
+      <result column="nick_name" jdbcType="VARCHAR" property="nickName"/>
+      <result column="status" jdbcType="INTEGER" property="status"/>
+      <result column="description" jdbcType="VARCHAR" property="description"/>
+      <result column="email" jdbcType="VARCHAR" property="email"/>
+      <result column="address" jdbcType="VARCHAR" property="address"/>
+      <result column="phone" jdbcType="VARCHAR" property="phone"/>
+      <result column="user_type" jdbcType="INTEGER" property="userType"/>
+      <result column="user_source" jdbcType="VARCHAR" property="userSource"/>
+      <result column="last_login_ip" jdbcType="VARCHAR" property="lastLoginIp"/>
+      <result column="last_login_location" jdbcType="VARCHAR" property="lastLoginLocation"/>
+      <result column="is_changed_pwd" jdbcType="SMALLINT" property="isChangedPwd"/>
+      <result column="last_login_time" jdbcType="DATE" property="lastLoginTime"/>
+      <result column="pwd_error_count" jdbcType="SMALLINT" property="pwdErrorCount"/>
+      <result column="pwd_error_time" jdbcType="DATE" property="pwdErrorTime"/>
+      <result column="user_avatar" jdbcType="VARCHAR" property="userAvatar"/>
+      <result column="sex" jdbcType="INTEGER" property="sex"/>
+      <result column="del_flag" jdbcType="INTEGER" property="delFlag"/>
+      <result column="create_by" jdbcType="VARCHAR" property="createBy"/>
+      <result column="create_time" jdbcType="DATE" property="createTime"/>
+      <result column="update_by" jdbcType="VARCHAR" property="updateBy"/>
+      <result column="update_time" jdbcType="DATE" property="updateTime"/>
+  </resultMap>
+
+  <sql id="Base_Column_List">
+    u.id,
+    u.create_by   as createBy,
+    u.create_time as createTime,
+    u.update_by   as updateBy,
+    u.update_time as updateTime,
+    u.user_name   as userName,
+    u.nick_name   as nickName,
+    u.password,
+    u.status,
+    u.description,
+    u.email,
+    u.address,
+    u.phone,
+    u.user_type   as userType,
+    u.user_source as userSource,
+    u.user_code   as userCode,
+    u.last_login_ip as lastLoginIp,
+    u.last_login_location as lastLoginLocation,
+    u.is_changed_pwd as isChangedPwd,
+    u.last_login_time as lastLoginTime,
+    u.pwd_error_time as pwdErrorTime,
+    u.pwd_error_count as pwdErrorCount,
+    u.user_avatar  as userAvatar,
+    u.del_flag   as delFlag,
+    u.sex
+  </sql>
+
+  <sql id ="Base_OrderBy_Condition">
+        <if test="orderBy != null and orderBy !=''">
+            ORDER BY ${orderBy}
+        </if>
+  </sql>
+
+  <sql id="Base_Where_Condition" >
+
+        <if test="username != null and username != ''" >
+            AND ${alias}.user_name = #{username,jdbcType=VARCHAR}
+        </if>
+        <if test="nickName != null and nickName != ''" >
+            AND ${alias}.nick_Name = #{nickName,jdbcType=VARCHAR}
+        </if>
+        <if test="status != null " >
+            AND ${alias}.status = #{status,jdbcType=INTEGER}
+        </if>
+        <if test="email != null and email != ''" >
+            AND ${alias}.email = #{email,jdbcType=VARCHAR}
+        </if>
+        <if test="phone != null and phone != ''" >
+            AND ${alias}.phone = #{phone,jdbcType=VARCHAR}
+        </if>
+        <if test="userType != null " >
+            AND ${alias}.user_type = #{userType,jdbcType=INTEGER}
+        </if>
+        <if test="lastLoginIp != null and lastLoginIp != ''" >
+            AND ${alias}.last_login_ip = #{lastLoginIp,jdbcType=VARCHAR}
+        </if>
+        <if test="lastLoginLocation != null and lastLoginLocation != ''" >
+            AND ${alias}.last_login_location = #{lastLoginLocation,jdbcType=VARCHAR}
+        </if>
+        <if test="sex != null and sex != ''" >
+            AND ${alias}.sex = #{sex,jdbcType=INTEGER}
+        </if>
+  </sql>
+
+  <!--分页查询用户列表-->
+  <select id="selectUserList" parameterType="com.monkeyzi.oauth.entity.dto.user.UserQueryDto" resultType="user">
+      SELECT
+      <include refid="Base_Column_List"/>, g.id as departmentId,
+      g.dept_name as departmentName
+      FROM
+      m_user u
+      LEFT JOIN m_department_user gu ON gu.user_id = u.id
+      LEFT JOIN m_department g ON g.id = gu.dept_id
+      WHERE 1 = 1
+      <include refid="Base_Where_Condition">
+          <property name="alias" value="u"></property>
+      </include>
+      <if test="deptId != null">
+          and   g.id=#{deptId,jdbcType=INTEGER}
+      </if>
+      <if test="(queryStartTime != null) ">
+          and   u.create_time &gt;= #{queryStartTime}
+      </if>
+      <if test="(queryEndTime != null)">
+          and   u.create_time &lt;= #{queryEndTime}
+      </if>
+      <include refid="Base_OrderBy_Condition">
+          <property name="alias" value="u"></property>
+      </include>
+  </select>
+</mapper>

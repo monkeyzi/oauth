@@ -4,12 +4,16 @@ import com.monkeyzi.oauth.base.BaseEntity;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
+import org.apache.ibatis.type.Alias;
 
+import javax.persistence.Table;
 import javax.persistence.Transient;
 import java.util.List;
 
 @Data
 @EqualsAndHashCode(callSuper = true)
+@Alias(value = "user")
+@Table(name = "m_user")
 public class User extends BaseEntity {
 
     private static final long serialVersionUID = 1L;

@@ -14,7 +14,7 @@ public enum ResponseCode {
 
 
     SUCCESS(0,"成功"),
-    ERROR(1,"服务异常");
+    ERROR(1,"操作失败");
 
 
     private final Integer code;
