@@ -2,6 +2,7 @@ package com.monkeyzi.oauth.base;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.monkeyzi.oauth.entity.dto.LoginAuthDto;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 import org.apache.commons.lang3.StringUtils;
@@ -50,5 +51,26 @@ public abstract class BaseEntity implements Serializable {
     @JsonIgnore
     public boolean isNew(){
         return StringUtils.isNotBlank(this.id);
+    }
+
+
+
+    /**
+     * Sets update info.
+     *
+     * @param user the user
+     */
+    @Transient
+    @JsonIgnore
+    public void setUpdateInfo(LoginAuthDto user) {
+
+        if (isNew()) {
+            this.createBy = user.getUserName();
+            this.createTime = (this.updateTime = new Date());
+            this.updateBy =user.getUserName();
+            this.delFlag=0;
+        }
+        this.createBy = user.getUserName();
+        this.updateTime = new Date();
     }
 }

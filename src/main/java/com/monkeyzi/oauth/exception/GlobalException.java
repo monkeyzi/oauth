@@ -19,6 +19,18 @@ public class GlobalException {
 
 
     /**
+     * 业务异常
+     * @param e
+     * @return
+     */
+    @ExceptionHandler(BusinessException.class)
+    @ResponseStatus(HttpStatus.OK)
+    @ResponseBody
+    public R businessException(BusinessException e) {
+        log.error("business exception");
+        return R.error(e.getCode(), e.getMessage());
+    }
+    /**
      * 404
      * @param e
      * @return
