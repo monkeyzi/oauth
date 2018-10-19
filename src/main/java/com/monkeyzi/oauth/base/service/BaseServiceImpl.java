@@ -18,7 +18,7 @@ import java.util.List;
  */
 @Slf4j
 public abstract class BaseServiceImpl<T> implements BaseService<T> {
-    @Autowired(required = false)
+    @Autowired
     protected Mapper<T> mapper;
 
     /**
