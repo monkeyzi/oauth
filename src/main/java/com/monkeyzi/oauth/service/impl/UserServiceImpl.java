@@ -109,6 +109,24 @@ public class UserServiceImpl extends BaseServiceImpl<User> implements UserServic
 
     @Override
     public int editUser(LoginAuthDto loginAuthDto, UserEditDto userEditDto) {
+
         return 0;
+    }
+
+    @Override
+    public User findUserByUserName(String userName) {
+        Preconditions.checkArgument(StringUtils.isNotBlank(userName),ErrorCodeEnum.US001);
+        User queryUser=new User();
+        queryUser.setUsername(userName);
+        User user=userMapper.selectOne(queryUser);
+        if (user!=null){
+           //查询用户的部门
+
+           //查询用户的角色
+
+           //查询用户的权限
+            return user;
+        }
+        return null;
     }
 }

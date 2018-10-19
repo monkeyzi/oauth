@@ -31,4 +31,11 @@ public interface UserService extends BaseService<User> {
      * @return
      */
     int editUser(LoginAuthDto loginAuthDto, UserEditDto userEditDto);
+
+    /**
+     * 根据用户名查询用户信息
+     * @param userName
+     * @return
+     */
+    User findUserByUserName(String userName);
 }
