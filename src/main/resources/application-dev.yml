@@ -100,5 +100,7 @@ monkeyzi:
       queueCapacity: 10000
       keepAliveSeconds: 3000
       threadNamePrefix: monkeyzi-task-executor-
+
+   # 高德地图ip获取城市
    gaode:
       key: 7ef566131d3a7c1e8a1c13fd41393fba

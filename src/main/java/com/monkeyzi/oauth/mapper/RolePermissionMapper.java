@@ -1,25 +1,18 @@
 package com.monkeyzi.oauth.mapper;
 
 import com.monkeyzi.oauth.base.mybatis.MyMapper;
-import com.monkeyzi.oauth.entity.domain.UserRole;
+import com.monkeyzi.oauth.entity.domain.RolePermission;
 import org.apache.ibatis.annotations.Mapper;
 import org.springframework.stereotype.Component;
 
 /**
  * @author: 高yg
- * @date: 2018/10/18 22:45
+ * @date: 2018/10/20 22:32
  * @qq:854152531@qq.com
  * @blog http://www.monkeyzi.xin
  * @description:
  */
-@Mapper
 @Component
-public interface UserRoleMapper  extends MyMapper<UserRole> {
-
-    /**
-     * 删除用户角色关系
-     * @param userId
-     * @return
-     */
-    int deleteUserRoleByUserId(String userId);
+@Mapper
+public interface RolePermissionMapper extends MyMapper<RolePermission> {
 }

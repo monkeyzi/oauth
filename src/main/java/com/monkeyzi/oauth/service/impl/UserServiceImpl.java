@@ -4,20 +4,15 @@ import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.google.common.base.Preconditions;
 import com.monkeyzi.oauth.base.service.BaseServiceImpl;
-import com.monkeyzi.oauth.entity.domain.Role;
-import com.monkeyzi.oauth.entity.domain.User;
-import com.monkeyzi.oauth.entity.domain.UserDepartment;
-import com.monkeyzi.oauth.entity.domain.UserRole;
+import com.monkeyzi.oauth.entity.domain.*;
 import com.monkeyzi.oauth.entity.dto.LoginAuthDto;
 import com.monkeyzi.oauth.entity.dto.user.UserEditDto;
 import com.monkeyzi.oauth.entity.dto.user.UserQueryDto;
 import com.monkeyzi.oauth.enums.ErrorCodeEnum;
 import com.monkeyzi.oauth.enums.UserSourceEnum;
 import com.monkeyzi.oauth.exception.BusinessException;
-import com.monkeyzi.oauth.mapper.RoleMapper;
-import com.monkeyzi.oauth.mapper.UserDepartmentMapper;
-import com.monkeyzi.oauth.mapper.UserMapper;
-import com.monkeyzi.oauth.mapper.UserRoleMapper;
+import com.monkeyzi.oauth.mapper.*;
+import com.monkeyzi.oauth.service.UserRoleService;
 import com.monkeyzi.oauth.service.UserService;
 import com.monkeyzi.oauth.utils.Md5Util;
 import com.monkeyzi.oauth.utils.PublicUtil;
@@ -48,6 +43,14 @@ public class UserServiceImpl extends BaseServiceImpl<User> implements UserServic
     @Autowired
     private UserRoleMapper userRoleMapper;
 
+    @Autowired
+    private DepartMentMapper departMentMapper;
+
+    @Autowired
+    private PermissionMapper permissionMapper;
+
+    @Autowired
+    private UserRoleService userRoleService;
 
 
 
@@ -85,35 +88,70 @@ public class UserServiceImpl extends BaseServiceImpl<User> implements UserServic
         int  result=userMapper.insertSelective(user);
         //添加组织关联
         UserDepartment userDept=new UserDepartment();
-        //这里可以先查询一下部门存在不存在   TODO
+        //这里可以先查询一下部门存在不存在
+        Department department=departMentMapper.selectByPrimaryKey(userEditDto.getDepartmentId());
+        if (department==null){
+            throw  new BusinessException(ErrorCodeEnum.DS201);
+        }
         userDept.setDeptId(userEditDto.getDepartmentId());
         userDept.setUserId(mUser.getId());
         userDept.setUpdateInfo(loginAuthDto);
         userDepartmentMapper.insertSelective(userDept);
         //如果角色不为空,绑定角色关系
         if (PublicUtil.isNotEmpty(userEditDto.getRoles())){
-            userEditDto.getRoles().forEach(a->{
-                UserRole userRole=new UserRole();
-                userRole.setRoleId(a);
-                userRole.setUserId(mUser.getId());
-                Role role=roleMapper.selectByPrimaryKey(a);
-                if (role!=null){
-                    userRole.setRoleName(role.getRoleName());
-                }
-                userRole.setUpdateInfo(loginAuthDto);
-                userRoleMapper.insertSelective(userRole);
-            });
+            addUserRole(loginAuthDto,userEditDto);
         }
         return result;
     }
 
     @Override
     public int editUser(LoginAuthDto loginAuthDto, UserEditDto userEditDto) {
+        Preconditions.checkArgument(PublicUtil.isNotEmpty(loginAuthDto),"没有获取到登录用户信息");
+        //设置信息
+        userEditDto.setUpdateInfo(loginAuthDto);
+        if (StringUtils.isNotBlank(userEditDto.getId())){
+            throw  new BusinessException(ErrorCodeEnum.US004);
+        }
+        User  user=userMapper.selectByPrimaryKey(userEditDto.getId());
+        if (user==null){
+            throw new BusinessException(ErrorCodeEnum.US003);
+        }
+        String oldName=user.getUsername();
+        //修改了用户名的
+        if (!userEditDto.getUsername().equals(oldName)){
+            User user1=new User();
+            user1.setUsername(oldName);
+            User userName=userMapper.selectOne(user1);
+            if (userName!=null){
+                throw new BusinessException(ErrorCodeEnum.US002,oldName);
+            }
+        }
+        int  result=userMapper.updateByPrimaryKeySelective(user);
+        //处理部门信息
+        UserDepartment userDepartment=new UserDepartment();
+        userDepartment.setUserId(loginAuthDto.getId());
+        userDepartment.setDeptId(userEditDto.getDepartmentId());
+        userDepartment.setUpdateInfo(loginAuthDto);
+        List<UserDepartment> userDeptList=userDepartmentMapper.selectDeptListByUserId(user.getId());
 
-        return 0;
+        if (PublicUtil.isNotEmpty(userDeptList)){
+            userDepartment.setId(generateId());
+            userDepartmentMapper.insertSelective(userDepartment);
+        }else {
+            //修改组织关联
+            userDepartmentMapper.updateByUserId(userDepartment);
+        }
+        //处理角色信息
+        //删除用户角色关系
+        userRoleService.deleteUserRoleByUserId(userEditDto.getId());
+        if (PublicUtil.isNotEmpty(userEditDto.getRoles())){
+            addUserRole(loginAuthDto,userEditDto);
+        }
+        return result;
     }
 
     @Override
+    @Transactional(readOnly = true,rollbackFor = Exception.class)
     public User findUserByUserName(String userName) {
         Preconditions.checkArgument(StringUtils.isNotBlank(userName),ErrorCodeEnum.US001);
         User queryUser=new User();
@@ -121,12 +159,34 @@ public class UserServiceImpl extends BaseServiceImpl<User> implements UserServic
         User user=userMapper.selectOne(queryUser);
         if (user!=null){
            //查询用户的部门
-
+           List<Department> userDeptList=departMentMapper.selectDeptListByUserId(user.getId());
+           if (PublicUtil.isNotEmpty(userDeptList)){
+               user.setDepartmentId(userDeptList.get(0).getId());
+               user.setDepartmentName(userDeptList.get(0).getDeptName());
+           }
            //查询用户的角色
-
+           List<Role> roleList=roleMapper.selectAllRoleByUserId(user.getId());
+           user.setRoles(roleList);
            //查询用户的权限
-            return user;
+           List<Permission> permissions=permissionMapper.findByUserId(user.getId());
+           user.setPermissions(permissions);
+           return user;
         }
         return null;
+    }
+
+    /**
+     * 添加用户角色关系
+     * @param loginAuthDto
+     * @param userEditDto
+     */
+    private void  addUserRole(LoginAuthDto loginAuthDto,UserEditDto userEditDto){
+        userEditDto.getRoles().forEach(a->{
+            UserRole userRole=new UserRole();
+            userRole.setRoleId(a);
+            userRole.setUserId(userEditDto.getId());
+            userRole.setUpdateInfo(loginAuthDto);
+            userRoleMapper.insertSelective(userRole);
+        });
     }
 }

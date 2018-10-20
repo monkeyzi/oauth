@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.monkeyzi.oauth.mapper.RoleMapper">
+    <resultMap id="BaseResultMap" type="role">
+        <id column="id" jdbcType="VARCHAR" property="id"/>
+        <result column="role_code" jdbcType="VARCHAR" property="roleCode"/>
+        <result column="role_name" jdbcType="VARCHAR" property="roleName"/>
+        <result column="status" jdbcType="VARCHAR" property="status"/>
+        <result column="description" jdbcType="VARCHAR" property="description"/>
+        <result column="default_role" jdbcType="INTEGER" property="defaultRole"/>
+        <result column="del_flag" jdbcType="INTEGER" property="delFlag"/>
+        <result column="create_by" jdbcType="VARCHAR" property="createBy"/>
+        <result column="create_time" jdbcType="DATE" property="createTime"/>
+        <result column="update_by" jdbcType="VARCHAR" property="updateBy"/>
+        <result column="update_time" jdbcType="DATE" property="updateTime"/>
+    </resultMap>
+    <sql id="Base_Column_List">
+        r.id,
+        r.create_by,
+        r.create_time,
+        r.update_by,
+        r.update_time,
+        r.role_code,
+        r.role_name,
+        r.status,
+        r.description,
+        r.del_flag,
+        r.default_role
+    </sql>
+
+    <select id="selectAllRoleByUserId" resultMap="BaseResultMap">
+        SELECT
+            <include refid="Base_Column_List"/>
+        FROM
+            m_role r
+            LEFT JOIN m_user_role ru ON ru.role_id = r.id
+        WHERE ru.user_id = #{userId}
+    </select>
+</mapper>

@@ -25,4 +25,6 @@ public class UserDepartment extends BaseEntity implements Serializable {
 
     @ApiModelProperty(value = "组织Id")
     private String deptId;
+
+
 }

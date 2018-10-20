@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.monkeyzi.oauth.mapper.DepartMentMapper">
+    <resultMap id="BaseResultMap" type="department">
+        <id column="id" jdbcType="VARCHAR" property="id"/>
+        <result column="del_flag" jdbcType="INTEGER" property="delFlag"/>
+        <result column="create_by" jdbcType="VARCHAR" property="createBy"/>
+        <result column="create_time" jdbcType="DATE" property="createTime"/>
+        <result column="update_by" jdbcType="VARCHAR" property="updateBy"/>
+        <result column="update_time" jdbcType="DATE" property="updateTime"/>
+        <result column="status" jdbcType="INTEGER" property="status"/>
+        <result column="parent_id" jdbcType="VARCHAR" property="parentId"/>
+        <result column="sort_order" jdbcType="DECIMAL" property="sortOrder"/>
+        <result column="dept_code" jdbcType="VARCHAR" property="deptCode"/>
+        <result column="dept_name" jdbcType="VARCHAR" property="deptName"/>
+        <result column="is_parent" jdbcType="INTEGER" property="isParent"/>
+        <result column="contact" jdbcType="VARCHAR" property="contact"/>
+        <result column="contact_phone" jdbcType="VARCHAR" property="contactPhone"/>
+        <result column="description" jdbcType="VARCHAR" property="description"/>
+        <result column="contact_wx" jdbcType="VARCHAR" property="contactWx"/>
+        <result column="level" jdbcType="INTEGER" property="level"/>
+        <result column="leaf" jdbcType="INTEGER" property="leaf"/>
+        <result column="contact_email" jdbcType="VARCHAR" property="contactEmail"/>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        g.id,
+        g.create_by,
+        g.create_time,
+        g.update_by,
+        g.update_time,
+        g.status,
+        g.del_flag,
+        g.parent_id,
+        g.sort_order,
+        g.dept_code,
+        g.dept_name,
+        g.is_parent,
+        g.contact,
+        g.contact_phone,
+        g.description,
+        g.contact_wx,
+        g.level,
+        g.leaf,
+        g.contact_email
+    </sql>
+
+    <select id="selectDeptListByUserId" resultMap="BaseResultMap">
+        SELECT
+        <include refid="Base_Column_List"/>
+        FROM
+        m_department g, m_department_user gu
+        where
+        1=1
+        and g.id = gu.dept_id
+        and gu.user_id = #{userId,jdbcType=VARCHAR}
+    </select>
+</mapper>

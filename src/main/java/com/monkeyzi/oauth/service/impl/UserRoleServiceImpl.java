@@ -1,9 +1,9 @@
 package com.monkeyzi.oauth.service.impl;
 
 import com.monkeyzi.oauth.base.service.BaseServiceImpl;
-import com.monkeyzi.oauth.entity.domain.UserDepartment;
-import com.monkeyzi.oauth.mapper.UserDepartmentMapper;
-import com.monkeyzi.oauth.service.UserDeptService;
+import com.monkeyzi.oauth.entity.domain.UserRole;
+import com.monkeyzi.oauth.mapper.UserRoleMapper;
+import com.monkeyzi.oauth.service.UserRoleService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -11,7 +11,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 /**
  * @author: 高yg
- * @date: 2018/10/18 22:35
+ * @date: 2018/10/20 18:55
  * @qq:854152531@qq.com
  * @blog http://www.monkeyzi.xin
  * @description:
@@ -19,14 +19,14 @@ import org.springframework.transaction.annotation.Transactional;
 @Service
 @Slf4j
 @Transactional(rollbackFor = Exception.class)
-public class UserDeptServiceImpl  extends BaseServiceImpl<UserDepartment> implements UserDeptService {
+public class UserRoleServiceImpl extends BaseServiceImpl<UserRole> implements UserRoleService {
 
     @Autowired
-    private UserDepartmentMapper userDepartmentMapper;
-
+    private UserRoleMapper userRoleMapper;
 
     @Override
-    public int updateByUserId(UserDepartment userDepartment) {
-        return userDepartmentMapper.updateByUserId(userDepartment);
+    public void deleteUserRoleByUserId(String userId) {
+       log.info("删除用户的角色 userId={}",userId);
+       userRoleMapper.deleteUserRoleByUserId(userId);
     }
 }

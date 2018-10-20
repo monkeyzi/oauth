@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.monkeyzi.oauth.mapper.PermissionMapper">
+    <resultMap id="BaseResultMap" type="permission">
+        <id column="id" jdbcType="VARCHAR" property="id"/>
+        <result column="name" jdbcType="VARCHAR" property="name"/>
+        <result column="parent_id" jdbcType="VARCHAR" property="parentId"/>
+        <result column="status" jdbcType="VARCHAR" property="status"/>
+        <result column="description" jdbcType="VARCHAR" property="description"/>
+        <result column="type" jdbcType="INTEGER" property="type"/>
+        <result column="sort_order" jdbcType="DECIMAL" property="sortOrder"/>
+        <result column="component" jdbcType="VARCHAR" property="component"/>
+        <result column="path" jdbcType="VARCHAR" property="path"/>
+        <result column="title" jdbcType="VARCHAR" property="title"/>
+        <result column="icon" jdbcType="VARCHAR" property="icon"/>
+        <result column="level" jdbcType="VARCHAR" property="level"/>
+        <result column="button_type" jdbcType="VARCHAR" property="buttonType"/>
+        <result column="url" jdbcType="VARCHAR" property="url"/>
+        <result column="del_flag" jdbcType="INTEGER" property="delFlag"/>
+        <result column="create_by" jdbcType="VARCHAR" property="createBy"/>
+        <result column="create_time" jdbcType="DATE" property="createTime"/>
+        <result column="update_by" jdbcType="VARCHAR" property="updateBy"/>
+        <result column="update_time" jdbcType="DATE" property="updateTime"/>
+    </resultMap>
+    <sql id="Base_Column_List">
+        g.id,
+        g.create_by,
+        g.create_time,
+        g.update_by,
+        g.update_time,
+        g.del_flag,
+        g.status,
+        g.description,
+        g.name,
+        g.parent_id,
+        g.type,
+        g.sort_order,
+        g.component,
+        g.path,
+        g.title,
+        g.icon,
+        g.level,
+        g.button_type,
+        g.url
+    </sql>
+
+    <select id="findByUserId" resultMap="BaseResultMap">
+      SELECT DISTINCT
+      <include refid="Base_Column_List"/>
+      FROM m_user u
+      LEFT JOIN m_user_role ur ON u.id = ur.user_id
+      LEFT JOIN m_role_permission rp ON ur.role_id = rp.role_id
+      LEFT JOIN m_permission p ON p.id = rp.permission_id
+      WHERE u.id = #{userId}
+      AND p.status = 0
+      ORDER BY p.sort_order ASC
+    </select>
+
+</mapper>

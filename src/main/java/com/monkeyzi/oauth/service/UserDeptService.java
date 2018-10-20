@@ -2,6 +2,8 @@ package com.monkeyzi.oauth.service;
 
 import com.monkeyzi.oauth.base.service.BaseService;
 import com.monkeyzi.oauth.entity.domain.UserDepartment;
+import com.monkeyzi.oauth.mapper.UserDepartmentMapper;
+import org.springframework.beans.factory.annotation.Autowired;
 
 /**
  * @author: 高yg
@@ -11,4 +13,12 @@ import com.monkeyzi.oauth.entity.domain.UserDepartment;
  * @description:
  */
 public interface UserDeptService extends BaseService<UserDepartment> {
+
+    /**
+     * 根据userId更新部门用户关系
+     * @param userDepartment
+     * @return
+     */
+   int updateByUserId(UserDepartment userDepartment);
+
 }
