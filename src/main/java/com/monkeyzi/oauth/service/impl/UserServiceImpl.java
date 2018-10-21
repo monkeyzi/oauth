@@ -308,7 +308,7 @@ public class UserServiceImpl extends BaseServiceImpl<User> implements UserServic
         bindRoleList.forEach(a->{
            Role role=roleMapper.selectByPrimaryKey(a);
            if (role==null){
-               throw new BusinessException(ErrorCodeEnum.RS301);
+               throw new BusinessException(ErrorCodeEnum.RS301,a);
            }
            UserRole userRole=new UserRole();
            userRole.setUserId(bindUserRolesDto.getUserId());
