@@ -25,8 +25,19 @@ public class GlobalConstant {
 
       }
 
+      /**
+       * 当前登录人
+       */
       public static final String CURRENT_AUTH_USER="CURRENT_AUTH_USER";
+      /**
+       * 系统超级管理员 用户Id
+       */
+      public static final String SYS_SUPER_ADMIN_USER_ID="0";
 
+      /**
+       * 系统超级管理员 角色ID
+       */
+      public static final String SYS_SUPER_ADMIN_ROEL_ID="0";
 
    }
    /**

@@ -5,6 +5,8 @@ import com.monkeyzi.oauth.entity.domain.UserRole;
 import org.apache.ibatis.annotations.Mapper;
 import org.springframework.stereotype.Component;
 
+import java.util.List;
+
 /**
  * @author: 高yg
  * @date: 2018/10/18 22:45
@@ -22,4 +24,11 @@ public interface UserRoleMapper  extends MyMapper<UserRole> {
      * @return
      */
     int deleteUserRoleByUserId(String userId);
+
+    /**
+     * 查询用户已经绑定的角色
+     * @param userId
+     * @return
+     */
+    List<UserRole> listByUserId(String userId);
 }

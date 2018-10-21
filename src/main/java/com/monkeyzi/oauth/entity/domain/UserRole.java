@@ -29,7 +29,5 @@ public class UserRole extends BaseEntity {
     @ApiModelProperty(value = "角色Id")
     private String roleId;
 
-    @Transient
-    @ApiModelProperty(value = "角色名")
-    private String roleName;
+
 }

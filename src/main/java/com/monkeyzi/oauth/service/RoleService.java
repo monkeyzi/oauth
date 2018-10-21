@@ -2,6 +2,9 @@ package com.monkeyzi.oauth.service;
 
 import com.monkeyzi.oauth.base.service.BaseService;
 import com.monkeyzi.oauth.entity.domain.Role;
+import com.monkeyzi.oauth.entity.dto.roleuser.BindRoleDto;
+
+import java.util.List;
 
 /**
  * @author: 高yg
@@ -11,4 +14,10 @@ import com.monkeyzi.oauth.entity.domain.Role;
  * @description:
  */
 public interface RoleService  extends BaseService<Role> {
+
+    /**
+     * 获取所有的角色列表
+     * @return
+     */
+    List<BindRoleDto> allBindRoleList();
 }

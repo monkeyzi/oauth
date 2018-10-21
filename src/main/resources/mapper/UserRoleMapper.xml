@@ -26,4 +26,8 @@
     <delete id="deleteUserRoleByUserId" parameterType="string">
         delete  from  m_department_user where user_id=#{userId}
     </delete>
+
+    <select id="listByUserId" resultMap="BaseResultMap">
+        SELECT <include refid="Base_Column_List"/> from m_user_role WHERE user_id = #{userId}
+    </select>
 </mapper>

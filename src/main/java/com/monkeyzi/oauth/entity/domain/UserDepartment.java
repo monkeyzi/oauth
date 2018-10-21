@@ -6,6 +6,7 @@ import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 import org.apache.ibatis.type.Alias;
 
+import javax.persistence.Table;
 import java.io.Serializable;
 
 /**
@@ -18,6 +19,7 @@ import java.io.Serializable;
 @Data
 @ApiModel(value = "用户组织关系")
 @Alias(value = "userDepartment")
+@Table(name = "m_department_user")
 public class UserDepartment extends BaseEntity implements Serializable {
 
     @ApiModelProperty(value = "用户Id")

@@ -4,14 +4,19 @@ import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.google.common.base.Preconditions;
 import com.monkeyzi.oauth.base.service.BaseServiceImpl;
+import com.monkeyzi.oauth.common.GlobalConstant;
 import com.monkeyzi.oauth.entity.domain.*;
 import com.monkeyzi.oauth.entity.dto.LoginAuthDto;
+import com.monkeyzi.oauth.entity.dto.roleuser.BindRoleDto;
+import com.monkeyzi.oauth.entity.dto.roleuser.BindUserRolesDto;
 import com.monkeyzi.oauth.entity.dto.user.UserEditDto;
 import com.monkeyzi.oauth.entity.dto.user.UserQueryDto;
+import com.monkeyzi.oauth.entity.vo.roleuser.BindRoleVo;
 import com.monkeyzi.oauth.enums.ErrorCodeEnum;
 import com.monkeyzi.oauth.enums.UserSourceEnum;
 import com.monkeyzi.oauth.exception.BusinessException;
 import com.monkeyzi.oauth.mapper.*;
+import com.monkeyzi.oauth.service.RoleService;
 import com.monkeyzi.oauth.service.UserRoleService;
 import com.monkeyzi.oauth.service.UserService;
 import com.monkeyzi.oauth.utils.Md5Util;
@@ -22,8 +27,12 @@ import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import tk.mybatis.mapper.util.StringUtil;
 
 import java.util.List;
+import java.util.Objects;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 @Service
 @Transactional(rollbackFor = Exception.class)
@@ -51,6 +60,9 @@ public class UserServiceImpl extends BaseServiceImpl<User> implements UserServic
 
     @Autowired
     private UserRoleService userRoleService;
+
+    @Autowired
+    private RoleService roleService;
 
 
 
@@ -173,6 +185,138 @@ public class UserServiceImpl extends BaseServiceImpl<User> implements UserServic
            return user;
         }
         return null;
+    }
+
+    @Override
+    public int modifyUserStatus(String userId, LoginAuthDto loginAuthUser,Integer status) {
+        Preconditions.checkArgument(StringUtil.isNotEmpty(userId),ErrorCodeEnum.US004.getMsg());
+        //不允许修改自己
+        if (userId.equals(loginAuthUser.getId())&&!userId.equals(GlobalConstant.Sys.SYS_SUPER_ADMIN_USER_ID)){
+            throw  new BusinessException(ErrorCodeEnum.US005);
+        }
+        //超级管理员不允许操作
+        if (userId.equals(GlobalConstant.Sys.SYS_SUPER_ADMIN_USER_ID)&&
+                !loginAuthUser.getId().equals(GlobalConstant.Sys.SYS_SUPER_ADMIN_USER_ID)){
+            log.error("越权操作,不能操作管理员账户");
+            throw  new BusinessException(ErrorCodeEnum.US006);
+        }
+        User userFind=userMapper.selectByPrimaryKey(userId);
+        if(userFind==null){
+            throw  new BusinessException(ErrorCodeEnum.US003);
+        }
+
+        User userChange=new User();
+        userChange.setId(userId);
+        userChange.setStatus(status);
+        userChange.setUpdateInfo(loginAuthUser);
+        int  result=userMapper.updateByPrimaryKeySelective(userChange);
+        return result;
+    }
+
+    @Override
+    public void deleteUserByUserIds(List<String> ids, LoginAuthDto loginAuthDto) {
+        if (PublicUtil.isEmpty(ids)){
+            throw new BusinessException(ErrorCodeEnum.GL10001);
+        }
+        if (ids.contains(GlobalConstant.Sys.SYS_SUPER_ADMIN_USER_ID)){
+            throw new BusinessException(ErrorCodeEnum.US006);
+        }
+        //删除用户
+        ids.forEach(a->{
+            userMapper.deleteByPrimaryKey(a);
+            //删除用户部门关系
+            UserDepartment userDept=new UserDepartment();
+            userDept.setUserId(a);
+            userDepartmentMapper.delete(userDept);
+            //删除用户角色关系
+            userRoleMapper.deleteUserRoleByUserId(a);
+        });
+
+    }
+
+    @Override
+    @Transactional(readOnly = true,rollbackFor = Exception.class)
+    public BindRoleVo getBindUserRoleList(String userId, LoginAuthDto loginAuthDto) {
+        Preconditions.checkArgument(StringUtils.isNotBlank(userId),ErrorCodeEnum.US004.getMsg());
+        //不允许操作自己
+        if (Objects.equals(userId,loginAuthDto.getId())&&!userId.equals(GlobalConstant.Sys.SYS_SUPER_ADMIN_USER_ID)){
+            throw  new BusinessException(ErrorCodeEnum.US005);
+        }
+        //不允许操作超级管理员账户
+        //超级管理员不允许操作
+        if (userId.equals(GlobalConstant.Sys.SYS_SUPER_ADMIN_USER_ID)&&
+                !loginAuthDto.getId().equals(GlobalConstant.Sys.SYS_SUPER_ADMIN_USER_ID)){
+            log.error("越权操作,不能操作管理员账户");
+            throw  new BusinessException(ErrorCodeEnum.US006);
+        }
+        //查询所有的角色列表
+        Set<BindRoleDto> allBindRoleList=roleService.allBindRoleList().stream().collect(Collectors.toSet());
+        //查询用户已经绑定的角色列表
+        List<UserRole> userRoles=userRoleService.getBindRoleByUserId(userId);
+        //组装数据返回
+        allBindRoleList.forEach(a->{
+            a.setBind(false);
+            if (userRoles.size()>0){
+                for (UserRole ur:userRoles){
+                    if (ur.getRoleId().equals(a.getRoleId())){
+                        a.setBind(true);
+                        break;
+                    }
+                }
+            }
+        });
+        BindRoleVo bindRoleVo=new BindRoleVo();
+        bindRoleVo.setBindRoleSet(allBindRoleList);
+        return bindRoleVo;
+    }
+
+    @Override
+    public void bindUserRole(BindUserRolesDto bindUserRolesDto, LoginAuthDto loginAuthDto) {
+        Preconditions.checkArgument(PublicUtil.isNotEmpty(bindUserRolesDto),ErrorCodeEnum.GL10001.getMsg());
+        //不允许操作自己
+        if (Objects.equals(bindUserRolesDto.getUserId(),loginAuthDto.getId())&&!
+                bindUserRolesDto.getUserId().equals(GlobalConstant.Sys.SYS_SUPER_ADMIN_USER_ID)){
+            throw  new BusinessException(ErrorCodeEnum.US005);
+        }
+        //不允许操作超级管理员账户
+        if (bindUserRolesDto.getUserId().equals(GlobalConstant.Sys.SYS_SUPER_ADMIN_USER_ID)&&
+                !loginAuthDto.getId().equals(GlobalConstant.Sys.SYS_SUPER_ADMIN_USER_ID)){
+            log.error("越权操作,不能操作管理员账户");
+            throw  new BusinessException(ErrorCodeEnum.US006);
+        }
+        List<String> bindRoleList=bindUserRolesDto.getRoleIdList();
+
+        User user=userMapper.selectByPrimaryKey(bindUserRolesDto.getUserId());
+        if (user==null){
+            log.error("没有查询到用户信息 userId={}",bindUserRolesDto.getUserId());
+        }
+        //查询用户已经绑定的角色
+        List<UserRole> userRoleList=userRoleService.getBindRoleByUserId(bindUserRolesDto.getUserId());
+        if(PublicUtil.isNotEmpty(userRoleList)){
+            //删除
+            userRoleService.deleteUserRoleByUserId(bindUserRolesDto.getUserId());
+        }
+        //更新用户的操作信息
+        final  User opUser=new User();
+        opUser.setId(bindUserRolesDto.getUserId());
+        opUser.setUpdateInfo(loginAuthDto);
+        userMapper.updateByPrimaryKeySelective(opUser);
+        if (PublicUtil.isEmpty(bindRoleList)){
+            log.info("用户角色解绑成功  userId={}",bindUserRolesDto.getUserId());
+        }
+
+        bindRoleList.forEach(a->{
+           Role role=roleMapper.selectByPrimaryKey(a);
+           if (role==null){
+               throw new BusinessException(ErrorCodeEnum.RS301);
+           }
+           UserRole userRole=new UserRole();
+           userRole.setUserId(bindUserRolesDto.getUserId());
+           userRole.setRoleId(a);
+           userRole.setUpdateInfo(loginAuthDto);
+           userRoleMapper.insertSelective(userRole);
+        });
+
     }
 
     /**
