@@ -2,6 +2,8 @@ package com.monkeyzi.oauth.service;
 
 import com.monkeyzi.oauth.base.service.BaseService;
 import com.monkeyzi.oauth.entity.domain.Permission;
+import com.monkeyzi.oauth.entity.dto.LoginAuthDto;
+import com.monkeyzi.oauth.entity.dto.permission.PermissionDto;
 
 import java.util.List;
 
@@ -27,4 +29,18 @@ public interface PermissionService extends BaseService<Permission> {
      * @return
      */
     Permission  matchUrl(String requestUrl);
+
+    /**
+     * 根据角色Id获取菜单/权限树
+     * @param roleId
+     * @param loginAuthDto
+     * @return
+     */
+    List<PermissionDto> getAllPermissionListByRoleId(String roleId, LoginAuthDto loginAuthDto);
+
+    /**
+     * 查询系统所有的菜单/权限递归成树
+     * @return
+     */
+    List<PermissionDto> getAllPermissionList();
 }

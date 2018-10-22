@@ -2,6 +2,8 @@ package com.monkeyzi.oauth.service;
 
 import com.monkeyzi.oauth.base.service.BaseService;
 import com.monkeyzi.oauth.entity.domain.RolePermission;
+import com.monkeyzi.oauth.entity.dto.LoginAuthDto;
+import com.monkeyzi.oauth.entity.dto.permission.BindPermissionDto;
 
 /**
  * @author: 高yg
@@ -11,4 +13,10 @@ import com.monkeyzi.oauth.entity.domain.RolePermission;
  * @description:
  */
 public interface RolePermissionService  extends BaseService<RolePermission> {
+    /**
+     * 给角色分配权限
+     * @param bindPermissionDto
+     * @param loginAuthUser
+     */
+    void bindRolePermissions(BindPermissionDto bindPermissionDto, LoginAuthDto loginAuthUser);
 }

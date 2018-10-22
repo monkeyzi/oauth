@@ -7,12 +7,14 @@ import com.monkeyzi.oauth.base.controller.BaseController;
 import com.monkeyzi.oauth.common.R;
 import com.monkeyzi.oauth.entity.domain.Role;
 import com.monkeyzi.oauth.entity.dto.LoginAuthDto;
+import com.monkeyzi.oauth.entity.dto.permission.BindPermissionDto;
 import com.monkeyzi.oauth.entity.dto.role.RoleDefaultDto;
 import com.monkeyzi.oauth.entity.dto.role.RoleDto;
 import com.monkeyzi.oauth.entity.dto.role.RoleQueryDto;
 import com.monkeyzi.oauth.enums.ErrorCodeEnum;
 import com.monkeyzi.oauth.enums.RoleStatusEnum;
 import com.monkeyzi.oauth.exception.BusinessException;
+import com.monkeyzi.oauth.service.RolePermissionService;
 import com.monkeyzi.oauth.service.RoleService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -34,6 +36,9 @@ public class RoleController extends BaseController {
 
     @Autowired
     private RoleService roleService;
+
+    @Autowired
+    private RolePermissionService rolePermissionService;
 
 
     @PostMapping(value = "/addRole")
@@ -83,7 +88,6 @@ public class RoleController extends BaseController {
 
     @PostMapping(value = "/deleteRole")
     @LogAnnotation
-    @ValidateAnnotation
     @ApiOperation(httpMethod = "POST",value = "删除角色")
     public R deleteRole(@RequestBody  List<String> ids){
         log.info("删除角色的参数为 ids={}",ids);
@@ -94,7 +98,6 @@ public class RoleController extends BaseController {
 
     @PostMapping(value = "/disableRole")
     @LogAnnotation
-    @ValidateAnnotation
     @ApiOperation(httpMethod = "POST",value = "禁用角色---支持批量")
     public R disableRole(@RequestBody  List<String> ids){
         log.info("禁用角色 ids={}",ids);
@@ -104,7 +107,6 @@ public class RoleController extends BaseController {
 
     @PostMapping(value = "/enableRole")
     @LogAnnotation
-    @ValidateAnnotation
     @ApiOperation(httpMethod = "POST",value = "启用角色---支持批量")
     public R enableRole(@RequestBody  List<String> ids){
         log.info("禁用角色 ids={}",ids);
@@ -112,6 +114,16 @@ public class RoleController extends BaseController {
         return R.okMsg("操作成功");
     }
 
+
+    @PostMapping(value = "/bindRolePermissions")
+    @LogAnnotation
+    @ValidateAnnotation
+    @ApiOperation(httpMethod = "POST",value = "角色绑定权限")
+    public R  bindRolePermissions(@ApiParam(name = "bindPermissionDto",value = "角色绑定权限")@Valid @RequestBody BindPermissionDto bindPermissionDto,BindingResult bindingResult){
+         log.info("角色绑定权限的参数是 bindPermissionDto={}",bindingResult);
+        rolePermissionService.bindRolePermissions(bindPermissionDto,getLoginAuthUser());
+        return R.okMsg("操作成功");
+    }
 
 
 

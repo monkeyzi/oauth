@@ -2,6 +2,8 @@ package com.monkeyzi.oauth.service.impl;
 
 import com.monkeyzi.oauth.base.service.BaseServiceImpl;
 import com.monkeyzi.oauth.entity.domain.Permission;
+import com.monkeyzi.oauth.entity.dto.LoginAuthDto;
+import com.monkeyzi.oauth.entity.dto.permission.PermissionDto;
 import com.monkeyzi.oauth.enums.SysEnum;
 import com.monkeyzi.oauth.mapper.PermissionMapper;
 import com.monkeyzi.oauth.service.PermissionService;
@@ -54,6 +56,23 @@ public class PermissionServiceImpl extends BaseServiceImpl<Permission> implement
                 return permission;
             }
         }
+        return null;
+    }
+
+    @Override
+    public List<PermissionDto> getAllPermissionListByRoleId(String roleId, LoginAuthDto loginAuthDto) {
+        //非超级管理员不能操作管理员角色
+        //查询所有的菜单权限
+        //查询该角色已经绑定的菜单权限
+        //设置选中状态
+        //递归成树形结构
+        return null;
+    }
+
+    @Override
+    public List<PermissionDto> getAllPermissionList() {
+        //查询所有的菜单权限
+        //递归成树形结构
         return null;
     }
 }
