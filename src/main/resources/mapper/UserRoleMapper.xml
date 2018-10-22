@@ -27,6 +27,7 @@
         delete  from  m_department_user where user_id=#{userId}
     </delete>
 
+    <!--查询用户已经绑定的角色关系-->
     <select id="listByUserId" resultMap="BaseResultMap">
         SELECT <include refid="Base_Column_List"/> from m_user_role WHERE user_id = #{userId}
     </select>
