@@ -22,7 +22,7 @@
         gu.update_by,
         gu.update_time
     </sql>
-<!--删除用户的角色关系-->
+    <!--删除用户的角色关系-->
     <delete id="deleteUserRoleByUserId" parameterType="string">
         delete  from  m_department_user where user_id=#{userId}
     </delete>
