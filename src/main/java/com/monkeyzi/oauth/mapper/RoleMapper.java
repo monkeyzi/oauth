@@ -2,6 +2,7 @@ package com.monkeyzi.oauth.mapper;
 
 import com.monkeyzi.oauth.base.mybatis.MyMapper;
 import com.monkeyzi.oauth.entity.domain.Role;
+import com.monkeyzi.oauth.entity.dto.role.RoleQueryDto;
 import com.monkeyzi.oauth.entity.dto.roleuser.BindRoleDto;
 import org.apache.ibatis.annotations.Mapper;
 import org.springframework.stereotype.Component;
@@ -27,6 +28,16 @@ public interface RoleMapper extends MyMapper<Role> {
      */
     List<Role> selectAllRoleByUserId(String userId);
 
-
+    /**
+     * 获取所有可以绑定的角色
+     * @return
+     */
     List<BindRoleDto> getAllBindRoleList();
+
+    /**
+     * 分页查询系统所有可用角色
+     * @param roleQueryDto
+     * @return
+     */
+    List<Role>  getAllRoleListWithPage(RoleQueryDto roleQueryDto);
 }

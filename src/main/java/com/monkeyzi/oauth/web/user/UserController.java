@@ -96,7 +96,7 @@ public class UserController extends BaseController {
     @PostMapping(value = "/deleteUser")
     @ApiOperation(httpMethod = "POST",value = "删除/批量删除用户")
     @LogAnnotation
-    public R deleteUser(@ApiParam(name = "ids",value = "用户的Ids集合")  List<String> ids){
+    public R deleteUser(@ApiParam(name = "ids",value = "用户的Ids集合")  @RequestBody List<String> ids){
         log.info("删除用户的参数为 userIds=",ids);
         LoginAuthDto loginAuthDto=getLoginAuthUser();
         userService.deleteUserByUserIds(ids,loginAuthDto);

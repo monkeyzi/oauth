@@ -28,6 +28,18 @@
         r.default_role
     </sql>
 
+    <!--查询参数-->
+    <sql id="Base_Where_Condition" >
+
+        <if test="roleName != null and roleName != ''" >
+            AND ${alias}.role_name = #{roleName,jdbcType=VARCHAR}
+        </if>
+        <if test="roleCode != null and roleCode != ''" >
+            AND ${alias}.role_code = #{roleCode,jdbcType=VARCHAR}
+        </if>
+
+    </sql>
+
     <select id="selectAllRoleByUserId" resultMap="BaseResultMap">
         SELECT
             <include refid="Base_Column_List"/>
@@ -43,4 +55,15 @@
             r.role_name as roleName
         FROM m_role r
     </select>
+
+    
+    <select id="getAllRoleListWithPage" parameterType="com.monkeyzi.oauth.entity.dto.role.RoleQueryDto" resultMap="BaseResultMap">
+        select <include refid="Base_Column_List"/> from m_role r
+        WHERE 1 = 1
+        <include refid="Base_Where_Condition">
+            <property name="alias" value="r"></property>
+        </include>
+        and r.status=0;
+    </select>
+
 </mapper>
