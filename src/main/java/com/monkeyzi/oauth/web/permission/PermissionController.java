@@ -26,7 +26,7 @@ import java.util.List;
  */
 @Slf4j
 @RestController
-@RequestMapping(value = "/permission", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+@RequestMapping(value = "/auth/permission", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
 @Api(value = "permissionController", description = "菜单/权限管理", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
 public class PermissionController extends BaseController {
 
@@ -45,7 +45,6 @@ public class PermissionController extends BaseController {
     @PostMapping(value = "/getAllPermissionList")
     @ApiOperation(httpMethod = "POST",value = "查询系统所有的菜单权限列表")
     public R getAllPermissionList(){
-        LoginAuthDto loginAuthDto=super.getLoginAuthUser();
         List<PermissionDto> permissionDtoList=permissionService.getAllPermissionList();
         return R.ok("查询成功",permissionDtoList);
     }

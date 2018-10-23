@@ -1,5 +1,6 @@
 package com.monkeyzi.oauth.service.impl;
 
+import com.google.common.base.Preconditions;
 import com.monkeyzi.oauth.base.service.BaseServiceImpl;
 import com.monkeyzi.oauth.common.GlobalConstant;
 import com.monkeyzi.oauth.entity.domain.Role;
@@ -13,9 +14,12 @@ import com.monkeyzi.oauth.mapper.RolePermissionMapper;
 import com.monkeyzi.oauth.mapper.UserRoleMapper;
 import com.monkeyzi.oauth.service.RolePermissionService;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.List;
 
 /**
  * @author: 高yg
@@ -61,5 +65,20 @@ public class RolePermissionServiceImpl extends BaseServiceImpl<RolePermission> i
             rolePermissionMapper.insertSelective(rolePermission);
         });
 
+    }
+
+    @Override
+    @Transactional(readOnly = true,rollbackFor = Exception.class)
+    public List<RolePermission> selectRolePermissionsByRoleId(String roleId) {
+        Preconditions.checkArgument(StringUtils.isNotBlank(roleId),ErrorCodeEnum.RS306.getMsg());
+        //查询该角色存在不存在
+        Role role=roleMapper.selectByPrimaryKey(roleId);
+        if (role==null){
+            throw new BusinessException(ErrorCodeEnum.RS307,roleId);
+        }
+        RolePermission rolePermission=new RolePermission();
+        rolePermission.setRoleId(roleId);
+        List<RolePermission> rolePermissions=rolePermissionMapper.select(rolePermission);
+        return rolePermissions;
     }
 }

@@ -39,6 +39,11 @@ public class GlobalConstant {
        */
       public static final String SYS_SUPER_ADMIN_ROEL_ID="0";
 
+      /**
+       * 菜单权限根目录节点
+       */
+      public static final  String SYS_MENU_PERMISSION_ID="0";
+
    }
    /**
     * 符号

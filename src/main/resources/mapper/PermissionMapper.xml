@@ -23,25 +23,25 @@
         <result column="update_time" jdbcType="DATE" property="updateTime"/>
     </resultMap>
     <sql id="Base_Column_List">
-        g.id,
-        g.create_by,
-        g.create_time,
-        g.update_by,
-        g.update_time,
-        g.del_flag,
-        g.status,
-        g.description,
-        g.name,
-        g.parent_id,
-        g.type,
-        g.sort_order,
-        g.component,
-        g.path,
-        g.title,
-        g.icon,
-        g.level,
-        g.button_type,
-        g.url
+        p.id,
+        p.create_by,
+        p.create_time,
+        p.update_by,
+        p.update_time,
+        p.del_flag,
+        p.status,
+        p.description,
+        p.name,
+        p.parent_id,
+        p.type,
+        p.sort_order,
+        p.component,
+        p.path,
+        p.title,
+        p.icon,
+        p.level,
+        p.button_type,
+        p.url
     </sql>
 
     <select id="findByUserId" resultMap="BaseResultMap">
@@ -56,4 +56,9 @@
       ORDER BY p.sort_order ASC
     </select>
 
+    <!--查询系统所有的可用的菜单权限-->
+    <select id="selectAllPermissions" resultMap="BaseResultMap">
+        select <include refid="Base_Column_List"/>
+        from m_permission p  where p.status=0
+    </select>
 </mapper>

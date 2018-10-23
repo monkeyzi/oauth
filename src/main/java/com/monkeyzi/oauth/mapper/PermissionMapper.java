@@ -25,4 +25,10 @@ public interface PermissionMapper extends MyMapper<Permission> {
      */
     List<Permission> findByUserId(String userId);
 
+    /**
+     * 查询所有的菜单权限
+     * @return
+     */
+    List<Permission> selectAllPermissions();
+
 }
