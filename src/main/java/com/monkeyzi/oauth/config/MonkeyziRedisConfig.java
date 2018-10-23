@@ -20,6 +20,8 @@ import org.springframework.data.redis.connection.jedis.JedisConnectionFactory;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.data.redis.serializer.Jackson2JsonRedisSerializer;
 import org.springframework.data.redis.serializer.StringRedisSerializer;
+import redis.clients.jedis.JedisPool;
+import redis.clients.jedis.JedisPoolConfig;
 
 /**
  * @author: 高yg
@@ -40,6 +42,16 @@ public class MonkeyziRedisConfig  extends CachingConfigurerSupport {
 
     @Autowired
     private JedisConnectionFactory jedisConnectionFactory;
+
+    @Bean
+    public JedisPool jedisPool() {
+        JedisPoolConfig jedisPoolConfig = new JedisPoolConfig();
+        jedisPoolConfig.setMaxTotal(1000);
+        return new JedisPool(jedisPoolConfig,
+                jedisConnectionFactory.getHostName(), jedisConnectionFactory.getPort(),
+                jedisConnectionFactory.getTimeout(), jedisConnectionFactory.getPassword());
+    }
+
 
     @Override
     @Bean

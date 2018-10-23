@@ -19,14 +19,19 @@ public class InterceptorConfiguration  implements WebMvcConfigurer {
     private IgnoredUrlsProperties ignoredUrlsProperties;
     @Autowired
     private TokenInterceptor tokenInterceptor;
+    @Autowired
+    private LimitRaterInterceptor limitRaterInterceptor;
 
     @Override
     public void addInterceptors(InterceptorRegistry registry) {
-       // 注册拦截器
+
+        // 注册token拦截器
         InterceptorRegistration ir = registry.addInterceptor(tokenInterceptor);
         // 配置拦截的路径
         ir.addPathPatterns("/**");
         // 配置不拦截的路径
         ir.excludePathPatterns(ignoredUrlsProperties.getUrls());
+        // 限流拦截器
+        registry.addInterceptor(limitRaterInterceptor);
     }
 }

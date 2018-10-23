@@ -44,6 +44,11 @@ public class GlobalConstant {
        */
       public static final  String SYS_MENU_PERMISSION_ID="0";
 
+      /**
+       * 全局限流 key
+       */
+     public static final   String SYS_RATER_LIMIT_KEY="MONKEYZI_LIMIT_KEY";
+
    }
    /**
     * 符号
