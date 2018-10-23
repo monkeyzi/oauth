@@ -13,6 +13,7 @@ import org.aspectj.lang.annotation.AfterReturning;
 import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.annotation.Before;
 import org.aspectj.lang.annotation.Pointcut;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.task.TaskExecutor;
 import org.springframework.stereotype.Component;
 import org.springframework.validation.BindingResult;
@@ -37,6 +38,9 @@ public class LogAspect {
 
     @Resource
     private TaskExecutor taskExecutor;
+
+    @Autowired(required = false)
+    private HttpServletRequest request;
 
     private static final int MAX_SIZE=2000;
 
@@ -78,14 +82,15 @@ public class LogAspect {
     }
 
 
+
     private void handlerLog(final JoinPoint joinPoint,final Object result){
         log.info("开始记录日志");
-        final Date startTime=this.threadLocal.get();
-        final Date endTime=new Date(System.currentTimeMillis());
-        HttpServletRequest request=RequestUtils.getRequest();
-        final UserAgent userAgent = UserAgent.parseUserAgentString(request.getHeader("user-Agent"));
-        String requestURI = request.getRequestURI();
+
         try {
+            final Date startTime=this.threadLocal.get();
+            final Date endTime=new Date(System.currentTimeMillis());
+            final UserAgent userAgent = UserAgent.parseUserAgentString(request.getHeader("user-Agent"));
+            String requestURI = request.getRequestURI();
             LogAnnotation iFlog=giveController(joinPoint);
             if (iFlog==null){
                 return;

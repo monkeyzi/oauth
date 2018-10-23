@@ -14,7 +14,7 @@ import java.util.Map;
 public class ThreadLocalMapUtils {
 
 
-   private static ThreadLocal<Map<String,Object>>  THREAD_CONTEXT=new ThreadLocalMap();
+   private static ThreadLocal<Map<String,Object>>  THREAD_CONTEXT=new MapThreadLocal();
 
     /**
      * 往threadLocal 存储对象

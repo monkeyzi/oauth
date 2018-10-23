@@ -1,9 +1,7 @@
 package com.monkeyzi.oauth.utils;
 
-import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.google.common.collect.Maps;
-import com.google.gson.Gson;
 import lombok.extern.slf4j.Slf4j;
 
 import javax.servlet.ServletResponse;
