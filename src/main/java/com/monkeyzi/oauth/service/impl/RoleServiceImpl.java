@@ -55,24 +55,45 @@ public class RoleServiceImpl extends BaseServiceImpl<Role> implements RoleServic
         Role role=new Role();
         role.setRoleCode(roleDto.getRoleCode());
         List<Role> roleByCode=roleMapper.select(role);
-        if (roleByCode.size()>0){
-            log.error("角色编码已经存在 roleCode={}",roleDto.getRoleCode());
-            throw new BusinessException(ErrorCodeEnum.RS303,roleDto.getRoleCode());
-        }
+
         role.setRoleCode(null);
         role.setRoleName(roleDto.getRoleName());
         List<Role> roleByName=roleMapper.select(role);
-        if (roleByName.size()>0){
-            log.error("角色名称已经存在 roleName={}",roleDto.getRoleName());
-            throw new BusinessException(ErrorCodeEnum.RS302,roleDto.getRoleName());
-        }
+
         BeanUtils.copyProperties(roleDto,role);
         //判断角色名和角色编码是否已经存在
         role.setUpdateInfo(loginAuthDto);
-        int result;
-        if (role.isNew()){
+        int result=0;
+        if (!role.isNew()){
+            if (roleByCode.size()>0){
+                log.error("角色编码已经存在 roleCode={}",roleDto.getRoleCode());
+                throw new BusinessException(ErrorCodeEnum.RS303,roleDto.getRoleCode());
+            }
+            if (roleByName.size()>0){
+                log.error("角色名称已经存在 roleName={}",roleDto.getRoleName());
+                throw new BusinessException(ErrorCodeEnum.RS302,roleDto.getRoleName());
+            }
+            role.setId(super.generateId());
             result=roleMapper.insertSelective(role);
         }else {
+            //根据id查询
+            Role roleById=roleMapper.selectByPrimaryKey(roleDto.getId());
+            if (roleById==null){
+                throw new BusinessException(ErrorCodeEnum.RS307,roleDto.getId());
+            }
+            //若名称修改了
+            if (!roleById.getRoleName().equals(roleDto.getRoleName())){
+                if (roleByName.size()>0){
+                    log.error("角色名称已经存在 roleName={}",roleDto.getRoleName());
+                    throw new BusinessException(ErrorCodeEnum.RS302,roleDto.getRoleName());
+                }
+            }
+            if (!roleById.getRoleCode().equals(roleDto.getRoleCode())){
+                if (roleByCode.size()>0){
+                    log.error("角色编码已经存在 roleCode={}",roleDto.getRoleCode());
+                    throw new BusinessException(ErrorCodeEnum.RS303,roleDto.getRoleCode());
+                }
+            }
             result=roleMapper.updateByPrimaryKeySelective(role);
         }
         return result;

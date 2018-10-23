@@ -1,5 +1,6 @@
 package com.monkeyzi.oauth.service.impl;
 
+import com.google.common.base.Preconditions;
 import com.monkeyzi.oauth.base.service.BaseServiceImpl;
 import com.monkeyzi.oauth.common.GlobalConstant;
 import com.monkeyzi.oauth.entity.domain.Permission;
@@ -12,6 +13,7 @@ import com.monkeyzi.oauth.exception.BusinessException;
 import com.monkeyzi.oauth.mapper.PermissionMapper;
 import com.monkeyzi.oauth.service.PermissionService;
 import com.monkeyzi.oauth.service.RolePermissionService;
+import com.monkeyzi.oauth.utils.PublicUtil;
 import com.monkeyzi.oauth.utils.TreeUtils;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
@@ -106,5 +108,67 @@ public class PermissionServiceImpl extends BaseServiceImpl<Permission> implement
         List<PermissionDto> dtoList=modelMapper.map(permissions,new TypeToken<List<PermissionDto>>() {}.getType());
         //递归成树形结构
         return TreeUtils.getTree(dtoList,GlobalConstant.Sys.SYS_MENU_PERMISSION_ID);
+    }
+
+    @Override
+    public int addPermission(PermissionDto permissionDto, LoginAuthDto loginAuthUser) {
+        ModelMapper modelMapper=new ModelMapper();
+        Permission permission=modelMapper.map(permissionDto,Permission.class);
+
+        Permission per=new Permission();
+        per.setName(permissionDto.getName());
+        Permission namePer=permissionMapper.selectOne(per);
+
+        per.setName(null);
+        per.setPath(permissionDto.getPath());
+        Permission pathP=permissionMapper.selectOne(per);
+
+        permission.setUpdateInfo(loginAuthUser);
+        int result=0;
+        if (!permission.isNew()){
+            //校验路径或者名称是否已经存在
+            if (namePer!=null){
+               throw new BusinessException(ErrorCodeEnum.PS101);
+            }
+            if (pathP!=null){
+                throw new BusinessException(ErrorCodeEnum.PS102);
+            }
+            permission.setId(super.generateId());
+            result= permissionMapper.insertSelective(permission);
+        }else {
+           //通过Id查询
+           Permission perOne=permissionMapper.selectByPrimaryKey(permissionDto.getId());
+           if (perOne==null){
+               throw new BusinessException(ErrorCodeEnum.PS103);
+           }
+           //名称修改了
+           if (!per.getName().equals(permissionDto.getName())){
+               if (namePer!=null){
+                   throw new BusinessException(ErrorCodeEnum.PS101);
+               }
+           }
+           if (!pathP.getPath().equals(permissionDto.getPath())){
+               if (pathP!=null){
+                   throw new BusinessException(ErrorCodeEnum.PS102);
+               }
+           }
+           result= permissionMapper.updateByPrimaryKeySelective(permission);
+        }
+        return result;
+    }
+
+    @Override
+    public void deletePermission(List<String> ids) {
+        Preconditions.checkArgument(PublicUtil.isNotEmpty(ids),ErrorCodeEnum.GL10001.getMsg());
+        ids.forEach(a->{
+            //删除权限
+            Permission permission=new Permission();
+            permission.setId(a);
+            permissionMapper.deleteByPrimaryKey(a);
+            //删除角色权限
+            RolePermission rolePermission=new RolePermission();
+            rolePermission.setPermissionId(a);
+            rolePermissionService.delete(rolePermission);
+        });
     }
 }

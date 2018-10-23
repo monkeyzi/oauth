@@ -43,4 +43,18 @@ public interface PermissionService extends BaseService<Permission> {
      * @return
      */
     List<PermissionDto> getAllPermissionList();
+
+    /**
+     * 添加/修改权限
+     * @param permissionDto
+     * @param loginAuthUser
+     * @return
+     */
+    int addPermission(PermissionDto permissionDto, LoginAuthDto loginAuthUser);
+
+    /**
+     * 删除菜单/权限
+     * @param ids
+     */
+    void deletePermission(List<String> ids);
 }

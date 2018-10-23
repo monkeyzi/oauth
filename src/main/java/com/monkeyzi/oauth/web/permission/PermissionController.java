@@ -1,20 +1,23 @@
 package com.monkeyzi.oauth.web.permission;
 
+import com.monkeyzi.oauth.annotation.LogAnnotation;
+import com.monkeyzi.oauth.annotation.ValidateAnnotation;
 import com.monkeyzi.oauth.base.controller.BaseController;
 import com.monkeyzi.oauth.common.R;
 import com.monkeyzi.oauth.entity.dto.LoginAuthDto;
 import com.monkeyzi.oauth.entity.dto.permission.PermissionDto;
+import com.monkeyzi.oauth.security.permission.MySecurityMetadataSource;
 import com.monkeyzi.oauth.service.PermissionService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.ApiParam;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.util.List;
 
 /**
@@ -33,6 +36,10 @@ public class PermissionController extends BaseController {
     @Autowired
     private PermissionService permissionService;
 
+    @Autowired
+    private MySecurityMetadataSource mySecurityMetadataSource;
+
+
     @PostMapping(value = "/getAllPermissionListWithRoleId/{roleId}")
     @ApiOperation(httpMethod = "POST",value = "查询角色的菜单权限列表")
     public R getAllPermissionListWithRoleId(@PathVariable String roleId){
@@ -48,4 +55,35 @@ public class PermissionController extends BaseController {
         List<PermissionDto> permissionDtoList=permissionService.getAllPermissionList();
         return R.ok("查询成功",permissionDtoList);
     }
+
+
+    @PostMapping(value = "/addPermission")
+    @ApiOperation(httpMethod = "POST",value = "添加/修改菜单权限")
+    @LogAnnotation
+    @ValidateAnnotation
+    public R addPermission(@ApiParam(name = "permissionDto",value = "新增/修改菜单权限参数") @RequestBody @Valid PermissionDto permissionDto, BindingResult bindingResult){
+        log.info("新增菜单权限参数 permissionDto={}",permissionDto);
+        int result=permissionService.addPermission(permissionDto,getLoginAuthUser());
+        //重新加载权限
+        mySecurityMetadataSource.loadPermissionResources();
+        return super.handleResult(result);
+    }
+
+
+    @PostMapping(value = "/deletePermission")
+    @ApiOperation(httpMethod = "POST",value = "删除菜单权限")
+    @LogAnnotation
+    @ValidateAnnotation
+    public R deletePermission(@RequestBody List<String> ids){
+        log.info("删除菜单权限的参数为 ids={}",ids);
+        permissionService.deletePermission(ids);
+        //重新加载权限
+        mySecurityMetadataSource.loadPermissionResources();
+        return R.okMsg("操作成功");
+    }
+
+
+
+
+
 }

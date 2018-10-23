@@ -4,6 +4,7 @@ import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 
+import javax.validation.constraints.NotBlank;
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.List;
@@ -29,21 +30,26 @@ public class PermissionDto  implements Serializable {
     private String  description;
 
     @ApiModelProperty(value = "菜单/权限名称")
+    @NotBlank(message = "名称不能为空")
     private String name;
 
     @ApiModelProperty(value = "菜单/权限父Id")
+    @NotBlank(message = "菜单/权限父Id不能为空")
     private String parentId;
 
     @ApiModelProperty(value = "类型 0页面 1具体操作")
+    @NotBlank(message = "权限类型不能为空")
     private Integer type;
 
     @ApiModelProperty(value = "排序")
+    @NotBlank(message = "排序不能为空")
     private BigDecimal sortOrder;
 
     @ApiModelProperty(value = "组件")
     private String component;
 
     @ApiModelProperty(value = "路径")
+    @NotBlank(message = "路径不能为空")
     private String path;
 
     @ApiModelProperty(value = "标题")
@@ -53,6 +59,7 @@ public class PermissionDto  implements Serializable {
     private String icon;
 
     @ApiModelProperty(value = "层级")
+    @NotBlank(message = "层级不能为空")
     private Integer level;
 
     @ApiModelProperty(value = "按钮类型")
