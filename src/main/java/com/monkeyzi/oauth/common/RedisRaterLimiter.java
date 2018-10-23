@@ -1,5 +1,7 @@
 package com.monkeyzi.oauth.common;
 
+import com.monkeyzi.oauth.enums.ErrorCodeEnum;
+import com.monkeyzi.oauth.exception.BusinessException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 import redis.clients.jedis.Jedis;
@@ -30,8 +32,9 @@ public class RedisRaterLimiter {
 
 
     public String acquireTokenFromBucket(String point, int limit, long timeout) {
-        Jedis jedis=jedisPool.getResource();
+        Jedis jedis=null;
         try {
+            jedis=jedisPool.getResource();
             String token=UUID.randomUUID().toString().replace("-","");
             long now=System.currentTimeMillis();
             //开启redis事务
@@ -72,6 +75,7 @@ public class RedisRaterLimiter {
 
         }catch (Exception e){
             log.error("redis限流出错 e={}",e.toString());
+            throw  new BusinessException(ErrorCodeEnum.GL10004);
         }finally {
             if (jedis!=null){
                 jedis.close();
