@@ -2,7 +2,9 @@ package com.monkeyzi.oauth.security.oauth;
 
 import com.google.common.collect.Maps;
 import com.monkeyzi.oauth.annotation.LogAnnotation;
+import com.monkeyzi.oauth.entity.domain.User;
 import com.monkeyzi.oauth.enums.LogTypeEnum;
+import com.monkeyzi.oauth.service.UserService;
 import com.monkeyzi.oauth.utils.Md5Util;
 import com.monkeyzi.oauth.utils.RequestUtils;
 import com.monkeyzi.oauth.utils.ResponseJsonUtil;
@@ -37,12 +39,14 @@ public class AuthenticationSuccessHandler extends SavedRequestAwareAuthenticatio
     private ClientDetailsService clientDetailsService;
     @Autowired
     private AuthorizationServerTokenServices authorizationServerTokenServices;
+    @Autowired
+    private UserService userService;
 
     @Override
     @LogAnnotation(description = "登录日志",logType = LogTypeEnum.LOGIN_LOG)
     public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response, Authentication authentication) throws ServletException, IOException {
 
-
+        User user= (User) authentication.getPrincipal();
         String username = ((UserDetails)authentication.getPrincipal()).getUsername();
         log.info("登陆成功了,获取的用户名是 username={}",username);
         List<GrantedAuthority> list = (List<GrantedAuthority>)
@@ -87,7 +91,7 @@ public class AuthenticationSuccessHandler extends SavedRequestAwareAuthenticatio
 
         OAuth2AccessToken token = authorizationServerTokenServices.createAccessToken(oAuth2Authentication);
         // 处理登录信息---记录token
-
+        userService.handlerLoginData(token,user,request);
         //登陆成功,返回token给客户端
         ResponseJsonUtil.out(response,ResponseJsonUtil.map(true,200,"登陆成功",token));
     }

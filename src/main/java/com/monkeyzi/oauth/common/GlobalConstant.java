@@ -49,6 +49,16 @@ public class GlobalConstant {
        */
      public static final   String SYS_RATER_LIMIT_KEY="MONKEYZI_LIMIT_KEY";
 
+      /**
+       * 登录错误次数 key
+       */
+     public static final  String SYS_LOGIN_LIMIT_COUNT="LOGIN_TIME_LIMIT";
+
+      /**
+       * 连续登录错误次数 超过限制 key
+       */
+     public static final  String SYS_LOGIN_FAIL_LIMIT="LOGIN_FAIL_LIMIT";
+
    }
    /**
     * 符号
