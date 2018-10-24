@@ -4,7 +4,7 @@
 
   <resultMap id="BaseResultMap" type="user">
       <id column="id" jdbcType="VARCHAR" property="id"/>
-      <result column="user_name" jdbcType="VARCHAR" property="username"/>
+      <result column="username" jdbcType="VARCHAR" property="username"/>
       <result column="password" jdbcType="VARCHAR" property="password"/>
       <result column="user_code" jdbcType="VARCHAR" property="userCode"/>
       <result column="nick_name" jdbcType="VARCHAR" property="nickName"/>
@@ -36,7 +36,7 @@
     u.create_time as createTime,
     u.update_by   as updateBy,
     u.update_time as updateTime,
-    u.user_name   as userName,
+    u.username   as   username,
     u.nick_name   as nickName,
     u.password,
     u.status,

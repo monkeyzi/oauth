@@ -21,4 +21,6 @@ public class WebmvcConfig implements WebMvcConfigurer {
         registry.addResourceHandler("/**")
                 .addResourceLocations("classpath:/META-INF/resources/", "classpath:/resources/", "classpath:/static/");
     }
+
+
 }

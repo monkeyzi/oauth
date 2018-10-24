@@ -41,7 +41,7 @@ public class LimitRaterInterceptor extends HandlerInterceptorAdapter {
         log.info("进入限流拦截器了");
         String ipAddr=RequestUtils.getRemoteAddr(request);
         //ip限流  一秒内限制5个请求
-        String tokenIp=redisRaterLimiter.acquireTokenFromBucket(ipAddr,5,1000);
+        String tokenIp=redisRaterLimiter.acquireTokenFromBucket(ipAddr,2,1000);
         if (StringUtils.isBlank(tokenIp)){
             log.error("该用户请求太快了 ip={}",ipAddr);
             throw new BusinessException(ErrorCodeEnum.GL10002);
@@ -56,17 +56,21 @@ public class LimitRaterInterceptor extends HandlerInterceptorAdapter {
         }
 
         //获取注解限流
-        HandlerMethod handlerMethod= (HandlerMethod) handler;
-        Method method=handlerMethod.getMethod();
-        RateLimiter rateLimiter=method.getAnnotation(RateLimiter.class);
-        if (rateLimiter!=null){
-            int limit=rateLimiter.limit();
-            int timeout=rateLimiter.timeout();
-            String tokenMethod=redisRaterLimiter.acquireTokenFromBucket(method.getName(),limit,timeout);
-            if (StringUtils.isBlank(tokenMethod)){
-                throw new BusinessException(ErrorCodeEnum.GL10003);
+        HandlerMethod handlerMethod = null;
+        if (handler instanceof HandlerMethod){
+            handlerMethod= (HandlerMethod) handler;
+            Method method=handlerMethod.getMethod();
+            RateLimiter rateLimiter=method.getAnnotation(RateLimiter.class);
+            if (rateLimiter!=null){
+                int limit=rateLimiter.limit();
+                int timeout=rateLimiter.timeout();
+                String tokenMethod=redisRaterLimiter.acquireTokenFromBucket(method.getName(),limit,timeout);
+                if (StringUtils.isBlank(tokenMethod)){
+                    throw new BusinessException(ErrorCodeEnum.GL10003);
+                }
             }
         }
+
         return true;
 
     }

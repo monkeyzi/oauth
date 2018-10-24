@@ -26,12 +26,11 @@ public class InterceptorConfiguration  implements WebMvcConfigurer {
     public void addInterceptors(InterceptorRegistry registry) {
 
         // 注册token拦截器
-        InterceptorRegistration ir = registry.addInterceptor(tokenInterceptor);
-        // 配置拦截的路径
-        ir.addPathPatterns("/**");
-        // 配置不拦截的路径
-        ir.excludePathPatterns(ignoredUrlsProperties.getUrls());
+        registry.addInterceptor(tokenInterceptor);
         // 限流拦截器
-        registry.addInterceptor(limitRaterInterceptor);
+        registry.addInterceptor(limitRaterInterceptor)
+                .addPathPatterns("/**")
+                .excludePathPatterns(ignoredUrlsProperties.getUrls());
+
     }
 }

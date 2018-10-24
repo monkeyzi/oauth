@@ -27,5 +27,9 @@ public class Md5Util {
         return new BCryptPasswordEncoder().matches(rawPassword, encodedPassword);
     }
 
+    public static void main(String[] args) {
+        String md=encrypt("1223gao");
+        System.out.println(md);
+    }
 
 }

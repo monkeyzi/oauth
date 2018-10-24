@@ -171,7 +171,7 @@ public class UserServiceImpl extends BaseServiceImpl<User> implements UserServic
         //修改了用户名的
         if (!userEditDto.getUsername().equals(oldName)){
             User user1=new User();
-            user1.setUsername(oldName);
+            user1.setUserCode(oldName);
             User userName=userMapper.selectOne(user1);
             if (userName!=null){
                 throw new BusinessException(ErrorCodeEnum.US002,oldName);

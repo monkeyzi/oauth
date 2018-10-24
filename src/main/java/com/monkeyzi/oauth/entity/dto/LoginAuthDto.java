@@ -11,6 +11,9 @@ import java.util.List;
 @Data
 @ApiModel(value = "授权用户")
 public class LoginAuthDto {
+    public LoginAuthDto(){
+
+    }
     public LoginAuthDto(String id,String userName,String nickName){
         this.id=id;
         this.userName=userName;

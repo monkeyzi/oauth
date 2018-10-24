@@ -5,6 +5,7 @@ import com.monkeyzi.oauth.entity.domain.User;
 import com.monkeyzi.oauth.service.UserService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -23,7 +24,7 @@ public class UserDetailServiceImpl  implements UserDetailsService {
     @Autowired
     private UserService userService;
     @Resource
-    private StringRedisTemplate redisTemplate;
+    private RedisTemplate<String,String> redisTemplate;
 
     private static final List<User> users=Lists.newArrayList();
 
@@ -34,8 +35,10 @@ public class UserDetailServiceImpl  implements UserDetailsService {
     @Override
     public UserDetails loadUserByUsername(String s) throws UsernameNotFoundException {
         Optional<User> user = Optional.ofNullable(userService.findUserByUserName(s));
-        if (!user.isPresent())
+        if (!user.isPresent()){
             throw new UsernameNotFoundException("用户名不存在");
-        else  return new SecurityUserDetails(user.get());
+        }else {
+            return new SecurityUserDetails(user.get());
+        }
     }
 }

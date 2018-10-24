@@ -10,6 +10,7 @@ import com.monkeyzi.oauth.utils.RequestUtils;
 import com.monkeyzi.oauth.utils.ResponseJsonUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.task.TaskExecutor;
 import org.springframework.http.HttpHeaders;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
@@ -20,6 +21,7 @@ import org.springframework.security.oauth2.provider.token.AuthorizationServerTok
 import org.springframework.security.web.authentication.SavedRequestAwareAuthenticationSuccessHandler;
 import org.springframework.stereotype.Component;
 
+import javax.annotation.Resource;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -41,6 +43,8 @@ public class AuthenticationSuccessHandler extends SavedRequestAwareAuthenticatio
     private AuthorizationServerTokenServices authorizationServerTokenServices;
     @Autowired
     private UserService userService;
+    @Resource
+    private TaskExecutor taskExecutor;
 
     @Override
     @LogAnnotation(description = "登录日志",logType = LogTypeEnum.LOGIN_LOG)
@@ -91,7 +95,7 @@ public class AuthenticationSuccessHandler extends SavedRequestAwareAuthenticatio
 
         OAuth2AccessToken token = authorizationServerTokenServices.createAccessToken(oAuth2Authentication);
         // 处理登录信息---记录token
-        userService.handlerLoginData(token,user,request);
+        taskExecutor.execute(()->userService.handlerLoginData(token,user,request));
         //登陆成功,返回token给客户端
         ResponseJsonUtil.out(response,ResponseJsonUtil.map(true,200,"登陆成功",token));
     }
