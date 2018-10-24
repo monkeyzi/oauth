@@ -67,6 +67,7 @@ public class AuthenticationFailHandler  extends SimpleUrlAuthenticationFailureHa
             //账户被禁用
             ResponseJsonUtil.out(response,ResponseJsonUtil.map(false,500,"账户被禁用",null));
         }else if (e instanceof LoginFailLimitException){
+            //登录次数超过限制
             ResponseJsonUtil.out(response,ResponseJsonUtil.map(false,500,((LoginFailLimitException) e).getMsg(),null));
         } else {
             //其他内部异常
