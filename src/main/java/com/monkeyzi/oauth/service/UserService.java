@@ -8,10 +8,20 @@ import com.monkeyzi.oauth.entity.dto.roleuser.BindUserRolesDto;
 import com.monkeyzi.oauth.entity.dto.user.UserEditDto;
 import com.monkeyzi.oauth.entity.dto.user.UserQueryDto;
 import com.monkeyzi.oauth.entity.vo.roleuser.BindRoleVo;
+import org.springframework.security.oauth2.common.OAuth2AccessToken;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 
 public interface UserService extends BaseService<User> {
+
+   /**
+   *  处理登录信息
+   * @param token
+   * @param principal
+   * @param request
+   */
+   void handlerLoginData(OAuth2AccessToken token, User principal, HttpServletRequest request);
 
     /**
      * 分页查询用户信息
@@ -73,4 +83,11 @@ public interface UserService extends BaseService<User> {
      * @param loginAuthDto
      */
     void bindUserRole(BindUserRolesDto bindUserRolesDto, LoginAuthDto loginAuthDto);
+
+    /**
+     * 根据用户名查询用户
+     * @param userName
+     * @return
+     */
+    User findUserByLoginName(String userName);
 }

@@ -16,19 +16,23 @@ import com.monkeyzi.oauth.enums.ErrorCodeEnum;
 import com.monkeyzi.oauth.enums.UserSourceEnum;
 import com.monkeyzi.oauth.exception.BusinessException;
 import com.monkeyzi.oauth.mapper.*;
-import com.monkeyzi.oauth.service.RoleService;
-import com.monkeyzi.oauth.service.UserRoleService;
-import com.monkeyzi.oauth.service.UserService;
+import com.monkeyzi.oauth.service.*;
 import com.monkeyzi.oauth.utils.Md5Util;
 import com.monkeyzi.oauth.utils.PublicUtil;
+import com.monkeyzi.oauth.utils.RequestUtils;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.task.TaskExecutor;
+import org.springframework.security.oauth2.common.OAuth2AccessToken;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import tk.mybatis.mapper.util.StringUtil;
 
+import javax.annotation.Resource;
+import javax.servlet.http.HttpServletRequest;
+import java.util.Date;
 import java.util.List;
 import java.util.Objects;
 import java.util.Set;
@@ -64,7 +68,42 @@ public class UserServiceImpl extends BaseServiceImpl<User> implements UserServic
     @Autowired
     private RoleService roleService;
 
+    @Autowired
+    private CommonService commonService;
 
+    @Resource
+    private TaskExecutor taskExecutor;
+
+    @Autowired
+    private UserTokenService userTokenService;
+
+
+    @Override
+    public void handlerLoginData(OAuth2AccessToken token, User principal, HttpServletRequest request) {
+        String  userName=principal.getUsername();
+        User    user=this.findUserByLoginName(userName);
+        User    user1=new User();
+        String  ipAddr=RequestUtils.getRemoteAddr(request);
+        String  location=commonService.getAddressLocationByIp(ipAddr);
+        user1.setId(user.getId());
+        user1.setLastLoginIp(ipAddr);
+        user1.setLastLoginLocation(location);
+        user1.setLastLoginTime(new Date());
+
+        LoginAuthDto loginAuthDto=new LoginAuthDto(user.getId(),user.getUsername(),user.getNickName());
+        // 记录用户的token信息
+        userTokenService.saveUserToken(token,loginAuthDto,request);
+        // 更新用户的最后登录信息
+        taskExecutor.execute(()->{
+            int result=userMapper.updateByPrimaryKeySelective(user1);
+            if (result>0){
+                log.info("更新用户的登录信息成功");
+            }else {
+                log.error("更新登录信息  失败了");
+            }
+        });
+
+    }
 
     @Override
     @Transactional(readOnly = true,rollbackFor = Exception.class)
@@ -317,6 +356,15 @@ public class UserServiceImpl extends BaseServiceImpl<User> implements UserServic
            userRoleMapper.insertSelective(userRole);
         });
 
+    }
+
+    @Override
+    public User findUserByLoginName(String userName) {
+        Preconditions.checkArgument(StringUtils.isNotBlank(userName),ErrorCodeEnum.US001);
+        User queryUser=new User();
+        queryUser.setUsername(userName);
+        User user=userMapper.selectOne(queryUser);
+        return user;
     }
 
     /**

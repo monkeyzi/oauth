@@ -8,6 +8,7 @@ import org.apache.ibatis.type.Alias;
 
 import javax.persistence.Table;
 import javax.persistence.Transient;
+import java.util.Date;
 import java.util.List;
 
 @Data
@@ -61,7 +62,7 @@ public class User extends BaseEntity {
     private Integer isChangedPwd;
 
     @ApiModelProperty(value = "最后一次登录时间")
-    private String lastLoginTime;
+    private Date lastLoginTime;
 
     @ApiModelProperty(value = "最后一次输错密码的时间")
     private String pwdErrorTime;

@@ -11,7 +11,11 @@ import java.util.List;
 @Data
 @ApiModel(value = "授权用户")
 public class LoginAuthDto {
-
+    public LoginAuthDto(String id,String userName,String nickName){
+        this.id=id;
+        this.userName=userName;
+        this.nickName=nickName;
+    }
     @ApiModelProperty(value = "用户Id")
     private String id;
 
