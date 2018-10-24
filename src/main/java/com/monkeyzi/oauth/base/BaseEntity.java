@@ -70,7 +70,7 @@ public abstract class BaseEntity implements Serializable {
             this.updateBy =user.getUserName();
             this.delFlag=0;
         }
-        this.createBy = user.getUserName();
+        this.updateBy = user.getUserName();
         this.updateTime = new Date();
     }
 }
