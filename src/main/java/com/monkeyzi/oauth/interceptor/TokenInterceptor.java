@@ -27,6 +27,7 @@ public class TokenInterceptor implements HandlerInterceptor {
         log.info("进入拦截器了");
         String token = StringUtils.substringAfter(request.getHeader(HttpHeaders.AUTHORIZATION), "Bearer ");
         //从redis中获取token
+        System.out.println(request.getRequestURI());
         //如果能取到就放行
 
 

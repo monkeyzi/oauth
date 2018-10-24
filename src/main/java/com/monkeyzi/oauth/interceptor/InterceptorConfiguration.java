@@ -26,7 +26,9 @@ public class InterceptorConfiguration  implements WebMvcConfigurer {
     public void addInterceptors(InterceptorRegistry registry) {
 
         // 注册token拦截器
-        registry.addInterceptor(tokenInterceptor);
+        registry.addInterceptor(tokenInterceptor)
+                .addPathPatterns("/**")
+                .excludePathPatterns(ignoredUrlsProperties.getUrls());
         // 限流拦截器
         registry.addInterceptor(limitRaterInterceptor)
                 .addPathPatterns("/**")
