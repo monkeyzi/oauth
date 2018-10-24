@@ -125,7 +125,7 @@ public class PermissionServiceImpl extends BaseServiceImpl<Permission> implement
 
         permission.setUpdateInfo(loginAuthUser);
         int result=0;
-        if (!permission.isNew()){
+        if (permission.isNew()){
             //校验路径或者名称是否已经存在
             if (namePer!=null){
                throw new BusinessException(ErrorCodeEnum.PS101);

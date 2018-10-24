@@ -50,7 +50,7 @@ public abstract class BaseEntity implements Serializable {
     @Transient
     @JsonIgnore
     public boolean isNew(){
-        return StringUtils.isNotBlank(this.id);
+        return StringUtils.isBlank(this.id);
     }
 
 

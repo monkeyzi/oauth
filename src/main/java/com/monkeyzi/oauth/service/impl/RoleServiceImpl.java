@@ -64,7 +64,7 @@ public class RoleServiceImpl extends BaseServiceImpl<Role> implements RoleServic
         //判断角色名和角色编码是否已经存在
         role.setUpdateInfo(loginAuthDto);
         int result=0;
-        if (!role.isNew()){
+        if (role.isNew()){
             if (roleByCode.size()>0){
                 log.error("角色编码已经存在 roleCode={}",roleDto.getRoleCode());
                 throw new BusinessException(ErrorCodeEnum.RS303,roleDto.getRoleCode());
