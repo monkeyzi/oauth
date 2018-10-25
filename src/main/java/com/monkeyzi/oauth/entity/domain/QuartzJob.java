@@ -6,6 +6,7 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 
 import javax.persistence.Table;
+import javax.validation.constraints.NotBlank;
 
 
 @Data
@@ -14,9 +15,11 @@ import javax.persistence.Table;
 public class QuartzJob  extends BaseEntity {
     private static final long serialVersionUID = 1L;
 
+    @NotBlank(message = "任务类名不能为空")
     @ApiModelProperty(value = "任务类名")
     private String jobClassName;
 
+    @NotBlank(message = "任务表达式不能为空")
     @ApiModelProperty(value = "cron表达式")
     private String cronExpression;
 
