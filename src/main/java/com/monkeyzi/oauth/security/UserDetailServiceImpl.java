@@ -26,11 +26,6 @@ public class UserDetailServiceImpl  implements UserDetailsService {
     @Resource
     private RedisTemplate<String,String> redisTemplate;
 
-
-
-
-
-
     @Override
     public UserDetails loadUserByUsername(String s) throws UsernameNotFoundException {
         String failKey=GlobalConstant.Sys.SYS_LOGIN_FAIL_LIMIT+":"+s;
