@@ -59,6 +59,7 @@ public class GlobalConstant {
        */
      public static final  String SYS_LOGIN_FAIL_LIMIT="LOGIN_FAIL_LIMIT";
 
+
    }
    /**
     * 符号
