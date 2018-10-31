@@ -97,4 +97,9 @@ public class LogDto extends BaseEntity implements Serializable {
      */
     private Integer status;
 
+    /**
+     * 请求方式
+     */
+    private String requestType;
+
 }

@@ -1,7 +1,12 @@
 package com.monkeyzi.oauth.security.permission;
 
+import com.monkeyzi.oauth.common.GlobalConstant;
+import com.monkeyzi.oauth.entity.domain.Permission;
+import com.monkeyzi.oauth.enums.SysEnum;
+import com.monkeyzi.oauth.service.PermissionService;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.ConfigAttribute;
 import org.springframework.security.access.SecurityConfig;
 import org.springframework.security.web.FilterInvocation;
@@ -25,6 +30,9 @@ public class MySecurityMetadataSource implements FilterInvocationSecurityMetadat
 
     private Map<String, Collection<ConfigAttribute>> map = null;
 
+    @Autowired
+    private PermissionService permissionService;
+
     /**
      * 加载所有的权限
      */
@@ -33,14 +41,14 @@ public class MySecurityMetadataSource implements FilterInvocationSecurityMetadat
         Collection<ConfigAttribute> configAttributes;
         ConfigAttribute cfg;
         // 获取启用的权限操作请求
-        List<String> permissions = Arrays.asList("/job/tt","/job/t2");
-        for(String  permission : permissions) {
+        List<Permission> permissions =permissionService.selectPermissionByType(SysEnum.PERMISSION_CODE.code);
+        for(Permission  permission : permissions) {
                 configAttributes = new ArrayList<>();
-                cfg = new SecurityConfig(permission);
+                cfg = new SecurityConfig(permission.getPath());
                 //作为MyAccessDecisionManager类的decide的第三个参数
                 configAttributes.add(cfg);
                 //用权限的path作为map的key，用ConfigAttribute的集合作为value
-                map.put(permission, configAttributes);
+                map.put(permission.getPath(), configAttributes);
         }
     }
     /**

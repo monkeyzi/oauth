@@ -120,6 +120,7 @@ public class LogAspect {
             logDto.setClassName(joinPoint.getTarget().getClass().getName());
             logDto.setMethodName(joinPoint.getSignature().getName());
             logDto.setRequestUrl(requestURI);
+            logDto.setRequestType(request.getMethod());
             logDto.setCreateBy(loginAuthDto.getUserName());
             logDto.setCreateTime(new Date());
             logDto.setUpdateBy(loginAuthDto.getUserName());

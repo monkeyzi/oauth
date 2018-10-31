@@ -92,6 +92,12 @@ public class Log extends BaseEntity {
      */
     @ApiModelProperty(value = "响应的数据")
     private String responseData;
+
+    /**
+     * 请求的类型
+     */
+    @ApiModelProperty(value = "请求类型")
+    private String requestType;
     /**
      * 类名
      */
