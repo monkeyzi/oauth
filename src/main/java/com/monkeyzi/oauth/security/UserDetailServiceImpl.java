@@ -28,6 +28,7 @@ public class UserDetailServiceImpl  implements UserDetailsService {
 
     @Override
     public UserDetails loadUserByUsername(String s) throws UsernameNotFoundException {
+        log.info("用户名密码");
         String failKey=GlobalConstant.Sys.SYS_LOGIN_FAIL_LIMIT+":"+s;
         String value=redisTemplate.opsForValue().get(failKey);
         Long timeRest = redisTemplate.getExpire(failKey, TimeUnit.MINUTES);

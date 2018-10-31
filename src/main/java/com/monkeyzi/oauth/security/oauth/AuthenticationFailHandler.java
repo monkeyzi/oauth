@@ -41,6 +41,7 @@ public class AuthenticationFailHandler  extends SimpleUrlAuthenticationFailureHa
     @Override
     public void onAuthenticationFailure(HttpServletRequest request, HttpServletResponse response, AuthenticationException e) throws IOException, ServletException {
         log.info("登录失败");
+        log.info(e.toString());
         if (e instanceof UsernameNotFoundException || e instanceof BadCredentialsException){
             String userName=request.getParameter("username");
             //记录错误次数
