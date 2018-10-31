@@ -56,7 +56,7 @@ public class LimitRaterInterceptor extends HandlerInterceptorAdapter {
         }
 
         //获取注解限流
-        HandlerMethod handlerMethod = null;
+        HandlerMethod handlerMethod;
         if (handler instanceof HandlerMethod){
             handlerMethod= (HandlerMethod) handler;
             Method method=handlerMethod.getMethod();
