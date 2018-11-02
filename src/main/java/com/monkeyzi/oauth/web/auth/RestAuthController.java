@@ -41,6 +41,9 @@ public class RestAuthController {
     @Autowired
     private PermissionService permissionService;
 
+    @Autowired
+    private EmailUtil emailUtil;
+
     /**
      * 请求需要登录的接口
      * @return
@@ -84,7 +87,6 @@ public class RestAuthController {
     public void send() {
         User user=new User();
         user.setUsername("gao");
-        EmailUtil emailUtil=new EmailUtil();
         emailUtil.sendTemplateEmail("18322596359@163.com","测试幼教","test-email",user);
     }
 

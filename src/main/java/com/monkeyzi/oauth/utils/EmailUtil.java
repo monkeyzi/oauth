@@ -23,9 +23,9 @@ import java.util.Properties;
 @Component
 public class EmailUtil {
 
-    private  String  email_Host="smtp.exmail.qq.com";
+    private  String  email_Host="smtp.qq.com";
     private  String  userName="854152531@qq.com";
-    private  String  password="uiyvhozmahlmbbej";
+    private  String  password="tkrnxuwdqawmbedg";
 
     @Autowired
     private TemplateEngine templateEngine;
