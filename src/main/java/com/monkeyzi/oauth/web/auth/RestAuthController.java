@@ -4,12 +4,14 @@ import com.monkeyzi.oauth.annotation.LogAnnotation;
 import com.monkeyzi.oauth.annotation.ValidateAnnotation;
 import com.monkeyzi.oauth.common.R;
 import com.monkeyzi.oauth.entity.domain.Permission;
+import com.monkeyzi.oauth.entity.domain.User;
 import com.monkeyzi.oauth.entity.dto.LogDto;
 import com.monkeyzi.oauth.entity.dto.gaode.GaodeLocation;
 import com.monkeyzi.oauth.entity.param.UserDto;
 import com.monkeyzi.oauth.enums.ErrorCodeEnum;
 import com.monkeyzi.oauth.service.LogService;
 import com.monkeyzi.oauth.service.PermissionService;
+import com.monkeyzi.oauth.utils.EmailUtil;
 import com.monkeyzi.oauth.utils.GaodeUtils;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
@@ -78,5 +80,12 @@ public class RestAuthController {
 
 
 
+    @PostMapping(value = "/send")
+    public void send() {
+        User user=new User();
+        user.setUsername("gao");
+        EmailUtil emailUtil=new EmailUtil();
+        emailUtil.sendTemplateEmail("18322596359@163.com","测试幼教","test-email",user);
+    }
 
 }
