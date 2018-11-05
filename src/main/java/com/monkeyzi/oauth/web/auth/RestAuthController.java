@@ -8,6 +8,7 @@ import com.monkeyzi.oauth.entity.domain.User;
 import com.monkeyzi.oauth.entity.dto.LogDto;
 import com.monkeyzi.oauth.entity.dto.gaode.GaodeLocation;
 import com.monkeyzi.oauth.entity.param.UserDto;
+import com.monkeyzi.oauth.entity.vo.email.EmailValidate;
 import com.monkeyzi.oauth.enums.ErrorCodeEnum;
 import com.monkeyzi.oauth.service.LogService;
 import com.monkeyzi.oauth.service.PermissionService;
@@ -85,9 +86,14 @@ public class RestAuthController {
 
     @PostMapping(value = "/send")
     public void send() {
-        User user=new User();
-        user.setUsername("gao");
-        emailUtil.sendTemplateEmail("18322596359@163.com","测试幼教","test-email",user);
+        EmailValidate validate=new EmailValidate();
+        validate.setUsername("monkeyzi");
+        validate.setCode("123456");
+        validate.setEmail("854152");
+        validate.setFullUrl("http://blog.monkeyzi.xin");
+        validate.setOperation("修改邮箱");
+        validate.setValidateUrl("http://loca");
+        emailUtil.sendTemplateEmail("18322596359@163.com","【monkeyzi】修改邮箱验证","code-email",validate);
     }
 
 }
