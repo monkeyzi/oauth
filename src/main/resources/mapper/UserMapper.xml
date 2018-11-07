@@ -67,7 +67,7 @@
   <sql id="Base_Where_Condition" >
 
         <if test="username != null and username != ''" >
-            AND ${alias}.user_name = #{username,jdbcType=VARCHAR}
+            AND ${alias}.username = #{username,jdbcType=VARCHAR}
         </if>
         <if test="nickName != null and nickName != ''" >
             AND ${alias}.nick_Name = #{nickName,jdbcType=VARCHAR}

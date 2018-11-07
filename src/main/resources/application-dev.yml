@@ -59,6 +59,7 @@ servlet:
 ignored:
   urls:
     - /auth/**
+    - /user/**
     - /druid/**
     - /swagger-ui.html
     - /swagger-resources/**

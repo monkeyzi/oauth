@@ -1,10 +1,13 @@
 package com.monkeyzi.oauth.entity.domain;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.monkeyzi.oauth.base.BaseEntity;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import org.apache.ibatis.type.Alias;
+import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.persistence.Table;
 import javax.persistence.Transient;
@@ -23,6 +26,7 @@ public class User extends BaseEntity {
     private String username;
 
     @ApiModelProperty(value = "密码")
+    @JsonIgnore
     private String password;
 
     @ApiModelProperty(value = "昵称/姓名")
@@ -62,10 +66,13 @@ public class User extends BaseEntity {
     private Integer isChangedPwd;
 
     @ApiModelProperty(value = "最后一次登录时间")
+    @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
+    @JsonFormat(timezone = "GMT+8", pattern = "yyyy-MM-dd HH:mm:ss")
     private Date lastLoginTime;
 
     @ApiModelProperty(value = "最后一次输错密码的时间")
-    private String pwdErrorTime;
+    @JsonFormat(timezone = "GMT+8", pattern = "yyyy-MM-dd HH:mm:ss")
+    private Date pwdErrorTime;
 
     @ApiModelProperty(value = "连续输错密码次数")
     private Integer pwdErrorCount;

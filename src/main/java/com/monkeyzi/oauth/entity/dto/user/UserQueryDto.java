@@ -35,7 +35,7 @@ public class UserQueryDto extends BaseQueryDto implements Serializable {
     @ApiModelProperty(value = "邮箱")
     private String  email;
 
-    @ApiModelProperty(value = "性别")
+    @ApiModelProperty(value = "用户类型")
     private Integer userType;
 
     @ApiModelProperty(value = "登录位置")
