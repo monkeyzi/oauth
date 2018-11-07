@@ -1,6 +1,5 @@
 package com.monkeyzi.oauth.utils;
 
-import com.alibaba.fastjson.JSONObject;
 import com.google.common.collect.Maps;
 import com.monkeyzi.oauth.entity.domain.User;
 import lombok.extern.slf4j.Slf4j;
@@ -92,6 +91,6 @@ public class EmailUtil {
         EmailUtil util=new EmailUtil();
          User user=new User();
          user.setUsername("高艳国");
-         util.sendTemplateEmail("18322596359@163.com","测试邮件","test-email",user);
+         util.sendTemplateEmail("18322596359@163.com","【monkeyzi】修改邮箱验证","test-email",user);
     }
 }

@@ -77,4 +77,35 @@ public class GlobalConstant {
       public static final String MH = ":";
       public final static String SHORT_LINE = "-";
     }
+
+
+   /**
+    * oss文件存储
+    */
+   public static  final class Oss{
+       private Oss(){
+
+       }
+
+      /**
+       * 阿里oss
+       */
+      public static final String ALI_OSS="ALI_OSS";
+      /**
+       * 存储图片的文件夹
+       */
+      public static final String ALI_OSS_IMG="image/";
+      /**
+       * 存储视频的文件夹
+       */
+      public static final String ALI_OSS_VIDEO="video/";
+      /**
+       * 存储其他类型的文件夹 如:压缩文件
+       */
+      public static final String ALI_OSS_FILE="file/";
+      /**
+       * 存储txt,word,excel等的文件夹
+       */
+      public static final String ALI_OSS_WORD="word/";
+   }
 }
