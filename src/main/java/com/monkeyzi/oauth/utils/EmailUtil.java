@@ -87,10 +87,5 @@ public class EmailUtil {
         }
         return map;
     }
-    public static void main(String[] args) {
-        EmailUtil util=new EmailUtil();
-         User user=new User();
-         user.setUsername("高艳国");
-         util.sendTemplateEmail("18322596359@163.com","【monkeyzi】修改邮箱验证","test-email",user);
-    }
+
 }

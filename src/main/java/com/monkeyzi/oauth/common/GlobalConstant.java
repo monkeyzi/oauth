@@ -1,5 +1,10 @@
 package com.monkeyzi.oauth.common;
 
+import com.google.common.collect.Lists;
+
+import java.util.Arrays;
+import java.util.List;
+
 public class GlobalConstant {
    /**
     * ip信息
@@ -92,20 +97,37 @@ public class GlobalConstant {
        */
       public static final String ALI_OSS="ALI_OSS";
       /**
+       * 七牛oss
+       */
+      public static final String QINIU_OSS="QINIU_OSS";
+      /**
        * 存储图片的文件夹
        */
-      public static final String ALI_OSS_IMG="image/";
+      public static final String OSS_IMG="image/";
       /**
        * 存储视频的文件夹
        */
-      public static final String ALI_OSS_VIDEO="video/";
+      public static final String OSS_VIDEO="video/";
       /**
        * 存储其他类型的文件夹 如:压缩文件
        */
-      public static final String ALI_OSS_FILE="file/";
+      public static final String OSS_FILE="file/";
       /**
        * 存储txt,word,excel等的文件夹
        */
-      public static final String ALI_OSS_WORD="word/";
+      public static final String OSS_WORD="word/";
+      /**
+       * 其他类型的文件
+       */
+      public static final String OSS_OTHER="other/";
+
+      public static final List<String> IMAGE_LIST = Arrays.asList("jpg","png","jpeg","gif","svg");
+
+      public static final List<String> VIDEO_LIST = Arrays.asList("mpeg","avi","flv","mp4","wmv");
+
+      public static final List<String> FILE_LIST  = Arrays.asList("psd","tar","zip","exe","bat","sh","rar");
+
+      public static final List<String> WORD_LIST  = Arrays.asList("txt","js","css","sass","doc",
+              "docx","pdf","xlsx","xls");
    }
 }
