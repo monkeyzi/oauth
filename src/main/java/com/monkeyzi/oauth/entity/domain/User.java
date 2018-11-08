@@ -3,6 +3,7 @@ package com.monkeyzi.oauth.entity.domain;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.monkeyzi.oauth.base.BaseEntity;
+import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -18,6 +19,7 @@ import java.util.List;
 @EqualsAndHashCode(callSuper = true)
 @Alias(value = "user")
 @Table(name = "m_user")
+@ApiModel(value = "用户信息")
 public class User extends BaseEntity {
 
     private static final long serialVersionUID = 1L;
