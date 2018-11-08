@@ -70,7 +70,7 @@
             AND ${alias}.username like concat("%",#{username,jdbcType=VARCHAR},"%")
         </if>
         <if test="nickName != null and nickName != ''" >
-            AND ${alias}.nick_Name = #{nickName,jdbcType=VARCHAR}
+            AND ${alias}.nick_Name = like concat("%",#{nickName,jdbcType=VARCHAR},"%")
         </if>
         <if test="status != null " >
             AND ${alias}.status = #{status,jdbcType=INTEGER}
