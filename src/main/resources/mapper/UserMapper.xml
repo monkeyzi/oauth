@@ -67,7 +67,7 @@
   <sql id="Base_Where_Condition" >
 
         <if test="username != null and username != ''" >
-            AND ${alias}.username = #{username,jdbcType=VARCHAR}
+            AND ${alias}.username like concat("%",#{username,jdbcType=VARCHAR},"%")
         </if>
         <if test="nickName != null and nickName != ''" >
             AND ${alias}.nick_Name = #{nickName,jdbcType=VARCHAR}
@@ -76,21 +76,21 @@
             AND ${alias}.status = #{status,jdbcType=INTEGER}
         </if>
         <if test="email != null and email != ''" >
-            AND ${alias}.email = #{email,jdbcType=VARCHAR}
+            AND ${alias}.email like concat("%",#{email,jdbcType=VARCHAR},"%")
         </if>
         <if test="phone != null and phone != ''" >
-            AND ${alias}.phone = #{phone,jdbcType=VARCHAR}
+            AND ${alias}.phone like concat("%",#{phone,jdbcType=VARCHAR},"%")
         </if>
         <if test="userType != null " >
             AND ${alias}.user_type = #{userType,jdbcType=INTEGER}
         </if>
         <if test="lastLoginIp != null and lastLoginIp != ''" >
-            AND ${alias}.last_login_ip = #{lastLoginIp,jdbcType=VARCHAR}
+            AND ${alias}.last_login_ip like concat("%",#{lastLoginIp,jdbcType=VARCHAR},"%")
         </if>
         <if test="lastLoginLocation != null and lastLoginLocation != ''" >
-            AND ${alias}.last_login_location = #{lastLoginLocation,jdbcType=VARCHAR}
+            AND ${alias}.last_login_location like concat("%",#{lastLoginLocation,jdbcType=VARCHAR},"%")
         </if>
-        <if test="sex != null and sex != ''" >
+        <if test="sex != null " >
             AND ${alias}.sex = #{sex,jdbcType=INTEGER}
         </if>
   </sql>
