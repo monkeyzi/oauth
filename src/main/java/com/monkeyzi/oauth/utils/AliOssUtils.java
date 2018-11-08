@@ -94,13 +94,6 @@ public class AliOssUtils {
     }
 
 
-    public static void main(String[] args) throws FileNotFoundException {
-       // AliOssUtils li=new AliOssUtils();
-      FileInputStream file=new FileInputStream("D:\\bgImage\\timg.jpg");
-        AliOssUtils li=new AliOssUtils();
-        String result=li.AliossInputStreamUpload(file,"hhh.jpg",FOLDER_NAME);
-        System.out.println(result);
-       //li.AliossCopyFile("我爱你.jpg","love.jpg",FOLDER_NAME);
-    }
+
 
 }
