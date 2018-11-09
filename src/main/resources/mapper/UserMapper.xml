@@ -93,6 +93,12 @@
         <if test="sex != null " >
             AND ${alias}.sex = #{sex,jdbcType=INTEGER}
         </if>
+      <if test="startTime != null and startTime != ''">
+            AND ${alias}.create_time &gt;= str_to_date(#{startTime}, '%Y-%m-%d %H')
+      </if>
+      <if test="endTime != null and endTime != ''">
+            AND ${alias}.create_time &lt;= str_to_date(#{endTime}, '%Y-%m-%d %T')
+      </if>
   </sql>
 
   <!--分页查询用户列表-->
@@ -110,12 +116,6 @@
       </include>
       <if test="deptId != null">
           and   g.id=#{deptId,jdbcType=INTEGER}
-      </if>
-      <if test="(queryStartTime != null) ">
-          and   u.create_time &gt;= #{queryStartTime}
-      </if>
-      <if test="(queryEndTime != null)">
-          and   u.create_time &lt;= #{queryEndTime}
       </if>
       <include refid="Base_OrderBy_Condition">
           <property name="alias" value="u"></property>

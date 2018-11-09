@@ -31,6 +31,9 @@ public class LoginAuthDto {
     @ApiModelProperty(value = "角色列表")
     private List<Role> roles;
 
+    @ApiModelProperty(value = "角色编号列表")
+    private List<String> roleList;
+
     @ApiModelProperty(value = "权限列表")
     private List<Permission> permissions;
 

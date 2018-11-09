@@ -109,6 +109,7 @@ public class UserServiceImpl extends BaseServiceImpl<User> implements UserServic
     @Transactional(readOnly = true,rollbackFor = Exception.class)
     public PageInfo queryUserListWithPage(UserQueryDto userQueryDto) {
         userQueryDto.setOrderBy(" last_login_time desc");
+        userQueryDto.setEndTime(userQueryDto.getEndTime()+" 23:59:59");
         PageHelper.startPage(userQueryDto.getPageNum(),userQueryDto.getPageSize());
         List<User> userList=userMapper.selectUserList(userQueryDto);
         PageInfo pageInfo=new PageInfo(userList);
@@ -218,6 +219,8 @@ public class UserServiceImpl extends BaseServiceImpl<User> implements UserServic
            //查询用户的角色
            List<Role> roleList=roleMapper.selectAllRoleByUserId(user.getId());
            user.setRoles(roleList);
+           //List<String> roleIds=roleList.stream().map(a->a.getId()).collect(Collectors.toList());
+
            //查询用户的权限
            List<Permission> permissions=permissionMapper.findByUserId(user.getId());
            user.setPermissions(permissions);

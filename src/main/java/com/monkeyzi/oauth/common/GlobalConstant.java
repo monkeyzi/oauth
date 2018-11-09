@@ -93,6 +93,10 @@ public class GlobalConstant {
        }
 
       /**
+       * 当前使用的oss
+       */
+      public static final String CURRENT_OSS="CORRENT_OSS";
+      /**
        * 阿里oss
        */
       public static final String ALI_OSS="ALI_OSS";

@@ -53,9 +53,7 @@ public class UserQueryDto extends BaseQueryDto implements Serializable {
     @ApiModelProperty(value = "创建时间--结束时间")
     private String  endTime;
 
-    private Date    queryStartTime;
 
-    private Date    queryEndTime;
 
 
 

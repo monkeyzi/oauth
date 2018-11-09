@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.monkeyzi.oauth.mapper.MfileMapper">
+    <resultMap id="BaseResultMap" type="mfile">
+        <id column="id" jdbcType="VARCHAR" property="id"/>
+        <result column="file_name" jdbcType="VARCHAR" property="fileName"/>
+        <result column="file_size" jdbcType="VARCHAR" property="fileSize"/>
+        <result column="file_type" jdbcType="VARCHAR" property="fileType"/>
+        <result column="file_location" jdbcType="VARCHAR" property="fileLocation"/>
+        <result column="folder_name" jdbcType="VARCHAR" property="folderName"/>
+        <result column="folder_id" jdbcType="VARCHAR" property="folderId"/>
+        <result column="file_url" jdbcType="VARCHAR" property="fileUrl"/>
+        <result column="del_flag" jdbcType="INTEGER" property="delFlag"/>
+        <result column="create_by" jdbcType="VARCHAR" property="createBy"/>
+        <result column="create_time" jdbcType="DATE" property="createTime"/>
+        <result column="update_by" jdbcType="VARCHAR" property="updateBy"/>
+        <result column="update_time" jdbcType="DATE" property="updateTime"/>
+    </resultMap>
+    <sql id="Base_Column_List">
+        f.id,
+        f.create_time,
+        f.create_by,
+        f.update_time,
+        f.update_by,
+        f.file_name,
+        f.file_size,
+        f.file_type,
+        f.file_location,
+        f.del_flag,
+        f.folder_name,
+        f.folder_id,
+        f.file_url
+    </sql>
+
+    <!--查询参数-->
+    <sql id="Base_Query_Where_Condition" >
+        <if test="folderIds !=null and folderIds.size() > 0 ">
+            AND  ${alias}.folder_id in
+            <foreach collection="folderIds" item="item" index="index" open="(" separator="," close=")">
+                #{item}
+            </foreach>
+        </if>
+        <if test="fileName != null and fileName != ''" >
+            AND ${alias}.file_name like concat("%",#{fileName,jdbcType=VARCHAR},"%")
+        </if>
+        <if test="fileType != null and fileType != ''" >
+            AND ${alias}.file_type = #{fileType,jdbcType=VARCHAR}
+        </if>
+        <if test="fileLocation != null and fileLocation != ''" >
+            AND ${alias}.file_location = #{fileLocation,jdbcType=VARCHAR}
+        </if>
+        <if test="createUser != null and createUser != ''" >
+            AND ${alias}.create_by = like concat("%",#{createUser,jdbcType=VARCHAR},"%")
+        </if>
+        <if test="queryStartTime != null and queryStartTime != ''">
+            AND ${alias}.create_time &gt;= str_to_date(#{queryStartTime}, '%Y-%m-%d %H')
+        </if>
+        <if test="queryEndTime != null and queryEndTime != ''">
+            AND ${alias}.create_time &lt;= str_to_date(#{queryEndTime}, '%Y-%m-%d %T')
+        </if>
+    </sql>
+
+
+
+    <select id="selectFileListByCondition" parameterType="com.monkeyzi.oauth.entity.dto.file.FileQueryDto" resultMap="BaseResultMap">
+        select <include refid="Base_Column_List"/> from m_file f
+        WHERE 1 = 1
+        <include refid="Base_Query_Where_Condition">
+            <property name="alias" value="f"></property>
+        </include>
+        order by f.create_time desc
+    </select>
+
+</mapper>

@@ -7,9 +7,9 @@ import com.monkeyzi.oauth.annotation.RateLimiter;
 import com.monkeyzi.oauth.annotation.ValidateAnnotation;
 import com.monkeyzi.oauth.base.controller.BaseController;
 import com.monkeyzi.oauth.common.R;
-import com.monkeyzi.oauth.entity.domain.Mfile;
 import com.monkeyzi.oauth.entity.dto.file.FileQueryDto;
 import com.monkeyzi.oauth.entity.dto.file.FolderDto;
+import com.monkeyzi.oauth.entity.dto.file.ReFileDto;
 import com.monkeyzi.oauth.enums.ErrorCodeEnum;
 import com.monkeyzi.oauth.service.FileFolderService;
 import com.monkeyzi.oauth.service.FileService;
@@ -35,6 +35,8 @@ public class UploadController extends BaseController {
     private FileService fileService;
     @Autowired
     private FileFolderService fileFolderService;
+
+
 
     @PostMapping(value = "/upload")
     @LogAnnotation
@@ -71,14 +73,46 @@ public class UploadController extends BaseController {
     }
 
 
-    @GetMapping(value = "/queryFolder")
+    @GetMapping(value = "/queryFileByFolder")
     @ApiOperation(httpMethod = "GET",value = "查询用户已上传文件文件")
     public R queryFileByFolder(@RequestBody FileQueryDto fileQueryDto){
         log.info("根据文件夹Id查询该文件夹下的文件的参数 fileQueryDto={}",fileQueryDto);
         Preconditions.checkArgument(StringUtils.isNotBlank(fileQueryDto.getFolderId()),ErrorCodeEnum.FU502.getMsg());
         PageInfo pageInfo=fileService.queryFileByFolder(fileQueryDto,getLoginAuthUser());
-       return R.okMsg("查询成功");
+        return R.ok("查询成功",pageInfo);
     }
+
+
+    @DeleteMapping(value = "/deleteFile/{ids}")
+    @ApiOperation(httpMethod = "DELETE",value = "删除文件")
+    @LogAnnotation
+    public R deleteFile(@PathVariable String[] ids){
+        log.info("删除文件的参数为 ids={}",ids);
+        fileService.deleteFile(ids);
+        return R.okMsg("操作成功");
+    }
+
+
+    @DeleteMapping(value = "/copyFile/{id}")
+    @ApiOperation(httpMethod = "POST",value = "复制文件")
+    @LogAnnotation
+    public R copyFile(@PathVariable String id){
+        log.info("复制文件的参数为 id={}",id);
+        fileService.copyFile(id,getLoginAuthUser());
+        return R.okMsg("操作成功");
+    }
+
+    @PutMapping(value = "/reNameFile")
+    @ApiOperation(httpMethod = "POST",value = "重命名文件")
+    @LogAnnotation
+    @ValidateAnnotation
+    public R reNameFile(@RequestBody @Valid ReFileDto fileDto,BindingResult bindingResult){
+        log.info("重命名文件的参数为 fileDto={}",fileDto);
+        fileService.reNameFile(fileDto,getLoginAuthUser());
+        return R.okMsg("操作成功");
+    }
+
+
 
 
 

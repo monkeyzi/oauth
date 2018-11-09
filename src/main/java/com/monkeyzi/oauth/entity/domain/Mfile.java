@@ -39,5 +39,8 @@ public class Mfile  extends BaseEntity {
     @ApiModelProperty(value = "文件访问路径")
     private String  fileUrl;
 
+    @ApiModelProperty(value = "文件原始名")
+    private String  originName;
+
 
 }
