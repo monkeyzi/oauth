@@ -81,7 +81,7 @@ public class UserServiceImpl extends BaseServiceImpl<User> implements UserServic
     @Override
     public void handlerLoginData(OAuth2AccessToken token, User principal, HttpServletRequest request) {
         String  userName=principal.getUsername();
-        User    user=this.findUserByLoginName(userName);
+        User    user=this.findUserByUserName(userName);
         User    user1=new User();
         String  ipAddr=RequestUtils.getRemoteAddr(request);
         String  location=commonService.getAddressLocationByIp(ipAddr);
@@ -90,7 +90,14 @@ public class UserServiceImpl extends BaseServiceImpl<User> implements UserServic
         user1.setLastLoginLocation(location);
         user1.setLastLoginTime(new Date());
 
-        LoginAuthDto loginAuthDto=new LoginAuthDto(user.getId(),user.getUsername(),user.getNickName());
+        //设置授权用户信息
+        LoginAuthDto loginAuthDto=new LoginAuthDto();
+        loginAuthDto.setId(user.getId());
+        loginAuthDto.setUserName(user.getUsername());
+        loginAuthDto.setNickName(user.getNickName());
+        loginAuthDto.setPermissions(user.getPermissions());
+        loginAuthDto.setRoles(user.getRoles());
+        loginAuthDto.setRoleList(user.getRoles().stream().map(a->a.getId()).collect(Collectors.toList()));
         // 记录用户的token信息
         userTokenService.saveUserToken(token,loginAuthDto,request);
         // 更新用户的最后登录信息
@@ -109,7 +116,9 @@ public class UserServiceImpl extends BaseServiceImpl<User> implements UserServic
     @Transactional(readOnly = true,rollbackFor = Exception.class)
     public PageInfo queryUserListWithPage(UserQueryDto userQueryDto) {
         userQueryDto.setOrderBy(" last_login_time desc");
-        userQueryDto.setEndTime(userQueryDto.getEndTime()+" 23:59:59");
+        if (StringUtils.isNotEmpty(userQueryDto.getEndTime())){
+            userQueryDto.setEndTime(userQueryDto.getEndTime()+" 23:59:59");
+        }
         PageHelper.startPage(userQueryDto.getPageNum(),userQueryDto.getPageSize());
         List<User> userList=userMapper.selectUserList(userQueryDto);
         PageInfo pageInfo=new PageInfo(userList);

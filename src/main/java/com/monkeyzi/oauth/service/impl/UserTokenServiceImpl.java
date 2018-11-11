@@ -3,6 +3,7 @@ package com.monkeyzi.oauth.service.impl;
 import com.monkeyzi.oauth.base.service.BaseServiceImpl;
 import com.monkeyzi.oauth.entity.domain.UserToken;
 import com.monkeyzi.oauth.entity.dto.LoginAuthDto;
+import com.monkeyzi.oauth.entity.dto.UserTokenDto;
 import com.monkeyzi.oauth.mapper.UserTokenMapper;
 import com.monkeyzi.oauth.security.config.OAuth2ClientProperties;
 import com.monkeyzi.oauth.security.config.SecurityProperties;
@@ -12,6 +13,7 @@ import com.monkeyzi.oauth.utils.RedisKeyUtil;
 import com.monkeyzi.oauth.utils.RequestUtils;
 import eu.bitwalker.useragentutils.UserAgent;
 import lombok.extern.slf4j.Slf4j;
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.security.oauth2.common.OAuth2AccessToken;
@@ -76,8 +78,16 @@ public class UserTokenServiceImpl  extends BaseServiceImpl<UserToken> implements
         userToken.setUserName(loginAuthDto.getUserName());
         //保存用户token信息
         int result=userTokenMapper.insertSelective(userToken);
+        ModelMapper modelMapper=new ModelMapper();
+        UserTokenDto  userTokenDto= modelMapper.map(userToken, UserTokenDto.class);
+        userTokenDto.setId(loginAuthDto.getId());
+        userTokenDto.setUserName(loginAuthDto.getUserName());
+        userTokenDto.setNickName(loginAuthDto.getNickName());
+        userTokenDto.setPermissions(loginAuthDto.getPermissions());
+        userTokenDto.setRoleList(loginAuthDto.getRoleList());
+        userTokenDto.setRoles(loginAuthDto.getRoles());
         //将token保存在redis中
-        updateUserTokenToRedis(access_token,accessTokenValidateSeconds,userToken);
+        updateUserTokenToRedis(access_token,accessTokenValidateSeconds,userTokenDto);
         return result;
     }
 
@@ -87,7 +97,7 @@ public class UserTokenServiceImpl  extends BaseServiceImpl<UserToken> implements
      * @param accessTokenValidateSeconds
      * @param userToken
      */
-    private void updateUserTokenToRedis(String accessToken,int accessTokenValidateSeconds,UserToken userToken){
+    private void updateUserTokenToRedis(String accessToken,int accessTokenValidateSeconds,UserTokenDto userToken){
        redisTemplate.opsForValue().set(RedisKeyUtil.getAccessTokenKey(accessToken),userToken,
                accessTokenValidateSeconds,TimeUnit.SECONDS);
     }

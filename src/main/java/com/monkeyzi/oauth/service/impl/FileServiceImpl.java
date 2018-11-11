@@ -121,16 +121,21 @@ public class FileServiceImpl extends BaseServiceImpl<Mfile> implements FileServi
               Preconditions.checkArgument(PublicUtil.isNotEmpty(fileFolder),ErrorCodeEnum.FU503.getMsg());
 
               fileFolderList=deepFolderList(fileFolder);
+              System.out.println(fileFolderList.size());
               //加上自己
               fileFolderList.add(fileFolder);
+              System.out.println(fileFolderList.size());
         }
 
         List<String> fList=fileFolderList.stream()
                                          .map(a->a.getId())
                                          .distinct()
                                          .collect(Collectors.toList());
+        log.info("查询出的文件夹的：{}",fList.size());
         fileQueryDto.setFolderIds(fList);
-        fileQueryDto.setQueryEndTime(fileQueryDto.getQueryEndTime()+" 23:59:59");
+        if (StringUtils.isNotEmpty(fileQueryDto.getQueryEndTime())){
+            fileQueryDto.setQueryEndTime(fileQueryDto.getQueryEndTime()+" 23:59:59");
+        }
         PageHelper.startPage(fileQueryDto.getPageNum(),fileQueryDto.getPageSize());
         List<Mfile> mfileList=mfileMapper.selectFileListByCondition(fileQueryDto);
         PageInfo pageInfo=new PageInfo(mfileList);
@@ -226,10 +231,9 @@ public class FileServiceImpl extends BaseServiceImpl<Mfile> implements FileServi
 
         // 查询该节点下的孩子
         FileFolder f=new FileFolder();
-        fileFolder.setParentId(fileFolder.getId());
-        fileFolder.setCreateBy(fileFolder.getCreateBy());
+        f.setParentId(fileFolder.getId());
+        f.setCreateBy(fileFolder.getCreateBy());
         List<FileFolder> fileFolderList=fileFolderService.select(f);
-
         for (FileFolder ff:fileFolderList){
             if (StringUtils.isBlank(ff.getParentId())){
                 continue;

@@ -24,8 +24,8 @@ public class UserServiceTest extends OauthApplicationTests {
     public void test1(){
         UserQueryDto dto=new UserQueryDto();
         //dto.setUsername("gaoyanguo");
-        dto.setQueryStartTime(DateUtil.parse("2018-10-11"));
-        dto.setQueryEndTime(DateUtil.endOfDay(DateUtil.parse("2018-10-18")));
+        /*dto.setQueryStartTime(DateUtil.parse("2018-10-11"));
+        dto.setQueryEndTime(DateUtil.endOfDay(DateUtil.parse("2018-10-18")));*/
         PageInfo pageInfo =userService.queryUserListWithPage(dto);
         List<User> userList=pageInfo.getList();
 

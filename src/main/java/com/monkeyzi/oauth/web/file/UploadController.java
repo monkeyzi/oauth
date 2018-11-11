@@ -7,6 +7,8 @@ import com.monkeyzi.oauth.annotation.RateLimiter;
 import com.monkeyzi.oauth.annotation.ValidateAnnotation;
 import com.monkeyzi.oauth.base.controller.BaseController;
 import com.monkeyzi.oauth.common.R;
+import com.monkeyzi.oauth.entity.domain.FileFolder;
+import com.monkeyzi.oauth.entity.dto.LoginAuthDto;
 import com.monkeyzi.oauth.entity.dto.file.FileQueryDto;
 import com.monkeyzi.oauth.entity.dto.file.FolderDto;
 import com.monkeyzi.oauth.entity.dto.file.ReFileDto;
@@ -24,6 +26,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.validation.Valid;
+import java.util.List;
 
 @RestController
 @Slf4j
@@ -36,7 +39,12 @@ public class UploadController extends BaseController {
     @Autowired
     private FileFolderService fileFolderService;
 
-
+    @GetMapping(value = "/queryFolder")
+    public  R  queryFolder(){
+        LoginAuthDto loginAuthDto=getLoginAuthUser();
+        List<FileFolder> list=fileFolderService.queryFolder(loginAuthDto);
+        return R.ok("ok",list);
+    }
 
     @PostMapping(value = "/upload")
     @LogAnnotation
