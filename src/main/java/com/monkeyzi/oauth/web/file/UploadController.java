@@ -7,11 +7,11 @@ import com.monkeyzi.oauth.annotation.RateLimiter;
 import com.monkeyzi.oauth.annotation.ValidateAnnotation;
 import com.monkeyzi.oauth.base.controller.BaseController;
 import com.monkeyzi.oauth.common.R;
-import com.monkeyzi.oauth.entity.domain.FileFolder;
 import com.monkeyzi.oauth.entity.dto.LoginAuthDto;
 import com.monkeyzi.oauth.entity.dto.file.FileQueryDto;
 import com.monkeyzi.oauth.entity.dto.file.FolderDto;
 import com.monkeyzi.oauth.entity.dto.file.ReFileDto;
+import com.monkeyzi.oauth.entity.dto.tree.TreeDto;
 import com.monkeyzi.oauth.enums.ErrorCodeEnum;
 import com.monkeyzi.oauth.service.FileFolderService;
 import com.monkeyzi.oauth.service.FileService;
@@ -40,9 +40,10 @@ public class UploadController extends BaseController {
     private FileFolderService fileFolderService;
 
     @GetMapping(value = "/queryFolder")
+    @ApiOperation(httpMethod = "GET",value = "查询文件夹树")
     public  R  queryFolder(){
         LoginAuthDto loginAuthDto=getLoginAuthUser();
-        List<FileFolder> list=fileFolderService.queryFolder(loginAuthDto);
+        List<TreeDto> list=fileFolderService.queryFolder(loginAuthDto);
         return R.ok("ok",list);
     }
 
@@ -81,8 +82,8 @@ public class UploadController extends BaseController {
     }
 
 
-    @GetMapping(value = "/queryFileByFolder")
-    @ApiOperation(httpMethod = "GET",value = "查询用户已上传文件文件")
+    @PostMapping(value = "/queryFileByFolder")
+    @ApiOperation(httpMethod = "POST",value = "查询用户已上传文件文件")
     public R queryFileByFolder(@RequestBody FileQueryDto fileQueryDto){
         log.info("根据文件夹Id查询该文件夹下的文件的参数 fileQueryDto={}",fileQueryDto);
         Preconditions.checkArgument(StringUtils.isNotBlank(fileQueryDto.getFolderId()),ErrorCodeEnum.FU502.getMsg());
@@ -101,7 +102,7 @@ public class UploadController extends BaseController {
     }
 
 
-    @DeleteMapping(value = "/copyFile/{id}")
+    @PostMapping(value = "/copyFile/{id}")
     @ApiOperation(httpMethod = "POST",value = "复制文件")
     @LogAnnotation
     public R copyFile(@PathVariable String id){
@@ -111,7 +112,7 @@ public class UploadController extends BaseController {
     }
 
     @PutMapping(value = "/reNameFile")
-    @ApiOperation(httpMethod = "POST",value = "重命名文件")
+    @ApiOperation(httpMethod = "PUT",value = "重命名文件")
     @LogAnnotation
     @ValidateAnnotation
     public R reNameFile(@RequestBody @Valid ReFileDto fileDto,BindingResult bindingResult){

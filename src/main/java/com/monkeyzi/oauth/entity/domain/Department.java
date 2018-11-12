@@ -33,9 +33,6 @@ public class Department extends BaseEntity implements Serializable {
     @ApiModelProperty(value = "部门名称")
     private String deptName;
 
-    @ApiModelProperty(value = "是不是父部门")
-    private Integer isParent;
-
     @ApiModelProperty(value = "部门联系人")
     private String contact;
 
@@ -50,9 +47,6 @@ public class Department extends BaseEntity implements Serializable {
 
     @ApiModelProperty(value = "层级")
     private Integer level;
-
-    @ApiModelProperty(value = "是否叶子节点,1不是 0是")
-    private Integer leaf;
 
     @ApiModelProperty(value = "部门联系人邮箱")
     private String contactEmail;

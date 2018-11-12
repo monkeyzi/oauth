@@ -13,13 +13,11 @@
         <result column="sort_order" jdbcType="DECIMAL" property="sortOrder"/>
         <result column="dept_code" jdbcType="VARCHAR" property="deptCode"/>
         <result column="dept_name" jdbcType="VARCHAR" property="deptName"/>
-        <result column="is_parent" jdbcType="INTEGER" property="isParent"/>
         <result column="contact" jdbcType="VARCHAR" property="contact"/>
         <result column="contact_phone" jdbcType="VARCHAR" property="contactPhone"/>
         <result column="description" jdbcType="VARCHAR" property="description"/>
         <result column="contact_wx" jdbcType="VARCHAR" property="contactWx"/>
         <result column="level" jdbcType="INTEGER" property="level"/>
-        <result column="leaf" jdbcType="INTEGER" property="leaf"/>
         <result column="contact_email" jdbcType="VARCHAR" property="contactEmail"/>
     </resultMap>
 
@@ -35,13 +33,11 @@
         g.sort_order,
         g.dept_code,
         g.dept_name,
-        g.is_parent,
         g.contact,
         g.contact_phone,
         g.description,
         g.contact_wx,
         g.level,
-        g.leaf,
         g.contact_email
     </sql>
 

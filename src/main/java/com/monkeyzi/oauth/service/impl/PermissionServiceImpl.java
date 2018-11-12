@@ -13,8 +13,8 @@ import com.monkeyzi.oauth.exception.BusinessException;
 import com.monkeyzi.oauth.mapper.PermissionMapper;
 import com.monkeyzi.oauth.service.PermissionService;
 import com.monkeyzi.oauth.service.RolePermissionService;
+import com.monkeyzi.oauth.utils.PermissionTreeUtils;
 import com.monkeyzi.oauth.utils.PublicUtil;
-import com.monkeyzi.oauth.utils.TreeUtils;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.modelmapper.ModelMapper;
@@ -96,7 +96,7 @@ public class PermissionServiceImpl extends BaseServiceImpl<Permission> implement
             }
         });
         //递归成树形结构
-        return TreeUtils.getTree(dtoList,GlobalConstant.Sys.SYS_MENU_PERMISSION_ID);
+        return PermissionTreeUtils.getTree(dtoList,GlobalConstant.Sys.SYS_MENU_PERMISSION_ID);
     }
 
     @Override
@@ -107,7 +107,7 @@ public class PermissionServiceImpl extends BaseServiceImpl<Permission> implement
         ModelMapper modelMapper=new ModelMapper();
         List<PermissionDto> dtoList=modelMapper.map(permissions,new TypeToken<List<PermissionDto>>() {}.getType());
         //递归成树形结构
-        return TreeUtils.getTree(dtoList,GlobalConstant.Sys.SYS_MENU_PERMISSION_ID);
+        return PermissionTreeUtils.getTree(dtoList,GlobalConstant.Sys.SYS_MENU_PERMISSION_ID);
     }
 
     @Override

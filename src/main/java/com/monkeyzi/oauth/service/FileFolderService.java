@@ -4,6 +4,7 @@ import com.monkeyzi.oauth.base.service.BaseService;
 import com.monkeyzi.oauth.entity.domain.FileFolder;
 import com.monkeyzi.oauth.entity.dto.LoginAuthDto;
 import com.monkeyzi.oauth.entity.dto.file.FolderDto;
+import com.monkeyzi.oauth.entity.dto.tree.TreeDto;
 
 import java.util.List;
 
@@ -30,5 +31,5 @@ public interface FileFolderService extends BaseService<FileFolder> {
      * @param loginAuthDto
      * @return
      */
-    List<FileFolder> queryFolder(LoginAuthDto loginAuthDto);
+    List<TreeDto> queryFolder(LoginAuthDto loginAuthDto);
 }
