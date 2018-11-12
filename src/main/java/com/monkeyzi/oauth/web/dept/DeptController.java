@@ -77,9 +77,9 @@ public class DeptController extends BaseController {
     }
 
 
-    @PostMapping(value = "/getDeptDetail/{id}")
+    @GetMapping(value = "/getDeptDetail/{id}")
     @LogAnnotation
-    @ApiOperation(httpMethod = "POST",value = "查询部门详情")
+    @ApiOperation(httpMethod = "GET",value = "查询部门详情")
     public R getDeptDetail(@PathVariable String id){
         log.info("查询部门详情的参数为 id={}",id);
         Preconditions.checkArgument(StringUtils.isNoneBlank(id),ErrorCodeEnum.DS203.getMsg());
