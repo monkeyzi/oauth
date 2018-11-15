@@ -1,7 +1,7 @@
 package com.monkeyzi.oauth.utils;
 
 import com.google.common.collect.Lists;
-import com.monkeyzi.oauth.entity.dto.permission.PermissionDto;
+import com.monkeyzi.oauth.entity.dto.tree.TreeDto;
 import org.apache.commons.lang3.StringUtils;
 
 import java.util.List;
@@ -11,43 +11,38 @@ import java.util.Objects;
  * 树形工具类
  */
 public class TreeUtils {
-
     /**
-     * 获取递归树
+     * 获取树
      * @param list
      * @param parentId
      * @return
      */
-    public static List<PermissionDto>  getTree(List<PermissionDto> list,String parentId){
+    public static List<TreeDto> getTree(List<TreeDto> list, String parentId){
 
-        List<PermissionDto> permissionDtoList= Lists.newArrayList();
-        for (PermissionDto dto:list){
+        List<TreeDto> dtoList= Lists.newArrayList();
+        for (TreeDto dto:list){
             if (StringUtils.isBlank(dto.getParentId())){
                 continue;
             }
             if (Objects.equals(dto.getParentId(),parentId)){
                 //递归子节点
                 recursionFn(list,dto);
-                permissionDtoList.add(dto);
+                dtoList.add(dto);
             }
         }
-        return permissionDtoList;
+        return dtoList;
     }
 
-    /**
-     * 递归列表
-     * @param list
-     * @param dto
-     */
-    public static  void recursionFn(List<PermissionDto> list,PermissionDto dto){
-        List<PermissionDto> childList=getChildList(list,dto);
+
+    public static  void recursionFn(List<TreeDto> list,TreeDto dto){
+        List<TreeDto> childList=getChildList(list,dto);
         dto.setChildren(childList);
         if (PublicUtil.isNotEmpty(childList)){
             dto.setHasChild(true);
         }
-        for (PermissionDto child:childList){
+        for (TreeDto child:childList){
             if (hasChild(list,child)){
-                for (PermissionDto ch:childList){
+                for (TreeDto ch:childList){
                     recursionFn(list,ch);
                 }
                 dto.setHasChild(true);
@@ -55,31 +50,31 @@ public class TreeUtils {
         }
     }
 
+
     /**
      * 获取子节点列表
      * @param list
      * @param dto
      * @return
      */
-    public static List<PermissionDto> getChildList(List<PermissionDto> list,PermissionDto dto){
-         List<PermissionDto> permissionDtoList=Lists.newArrayList();
-         for (PermissionDto permissionDto:list){
-             if (PublicUtil.isEmpty(permissionDto.getParentId())){
-                 continue;
-             }
-             if (Objects.equals(permissionDto.getParentId(),dto.getId())){
-                 permissionDtoList.add(permissionDto);
-             }
-         }
-         return permissionDtoList;
+    public static List<TreeDto> getChildList(List<TreeDto> list,TreeDto dto){
+        List<TreeDto> dtoList=Lists.newArrayList();
+        for (TreeDto ch:list){
+            if (PublicUtil.isEmpty(ch.getParentId())){
+                continue;
+            }
+            if (Objects.equals(ch.getParentId(),dto.getId())){
+                dtoList.add(ch);
+            }
+        }
+        return dtoList;
     }
 
 
     /**
      * 判断是否有子节点
      */
-    private static boolean hasChild(List<PermissionDto> list,PermissionDto dto) {
+    private static boolean hasChild(List<TreeDto> list,TreeDto dto) {
         return !getChildList(list, dto).isEmpty();
     }
-
 }

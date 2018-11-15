@@ -48,7 +48,14 @@ public class GlobalConstant {
        * 菜单权限根目录节点
        */
       public static final  String SYS_MENU_PERMISSION_ID="0";
-
+      /**
+       * 文件夹根目录节点
+       */
+      public static final  String SYS_FOLDER_ID="0";
+      /**
+       * 系统部门根目录
+       */
+      public static final  String SYS_DEPT_ID="0";
       /**
        * 全局限流 key
        */

@@ -5,11 +5,14 @@ import com.monkeyzi.oauth.common.GlobalConstant;
 import com.monkeyzi.oauth.entity.domain.FileFolder;
 import com.monkeyzi.oauth.entity.dto.LoginAuthDto;
 import com.monkeyzi.oauth.entity.dto.file.FolderDto;
+import com.monkeyzi.oauth.entity.dto.tree.TreeDto;
 import com.monkeyzi.oauth.enums.ErrorCodeEnum;
 import com.monkeyzi.oauth.exception.BusinessException;
 import com.monkeyzi.oauth.service.FileFolderService;
+import com.monkeyzi.oauth.utils.TreeUtils;
 import lombok.extern.slf4j.Slf4j;
 import org.modelmapper.ModelMapper;
+import org.modelmapper.TypeToken;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -48,14 +51,22 @@ public class FileFolderServiceImpl extends BaseServiceImpl<FileFolder> implement
     }
 
     @Override
-    public List<FileFolder> queryFolder(LoginAuthDto loginAuthDto) {
+    public List<TreeDto> queryFolder(LoginAuthDto loginAuthDto) {
         //超管角色可以查看全部
         List<FileFolder> fileFolderList;
-        if (loginAuthDto.getRoles()!=null&&loginAuthDto.getRoleList().
+        //所有的用户新建文件夹的时候层级1的父亲都是 0
+        FileFolder fileFolder=super.selectByKey(GlobalConstant.Sys.SYS_FOLDER_ID);
+        if (loginAuthDto.getRoleList()!=null&&loginAuthDto.getRoleList().
                 contains(GlobalConstant.Sys.SYS_SUPER_ADMIN_ROEL_ID)){
-         //所有的用户新建文件夹的时候层级1的父亲都是 0
             fileFolderList=super.selectAll();
+        }else {
+            FileFolder folder=new FileFolder();
+            folder.setCreateBy(loginAuthDto.getUserName());
+            fileFolderList=select(folder);
         }
-        return null;
+        //递归成树形结构
+        ModelMapper modelMapper=new ModelMapper();
+        List<TreeDto> dtoList=modelMapper.map(fileFolderList,new TypeToken<List<TreeDto>>() {}.getType());
+        return TreeUtils.getTree(dtoList,fileFolder.getId());
     }
 }
