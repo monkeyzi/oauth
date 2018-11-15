@@ -114,8 +114,8 @@
       <include refid="Base_Where_Condition">
           <property name="alias" value="u"></property>
       </include>
-      <if test="deptId != null">
-          and   g.id=#{deptId,jdbcType=INTEGER}
+      <if test="deptId != null and deptId !=''">
+          and   g.id=#{deptId,jdbcType=VARCHAR}
       </if>
       <include refid="Base_OrderBy_Condition">
           <property name="alias" value="u"></property>
