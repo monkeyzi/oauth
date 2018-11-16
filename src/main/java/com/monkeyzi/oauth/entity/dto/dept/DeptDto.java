@@ -19,18 +19,18 @@ public class DeptDto implements Serializable {
     @ApiModelProperty(value = "状态 0：可用  1:不可用")
     private Integer status;
 
-    @ApiModelProperty(value = "父ID")
+    @ApiModelProperty(value = "父ID",required = true)
     @NotBlank(message = "上级部门Id不能为空")
     private String parentId;
 
     @ApiModelProperty(value = "排序字段,支持小数")
     private BigDecimal sortOrder;
 
-    @ApiModelProperty(value = "部门编码")
+    @ApiModelProperty(value = "部门编码",required = true)
     @NotBlank(message = "部门编码不能为空")
     private String deptCode;
 
-    @ApiModelProperty(value = "部门名称")
+    @ApiModelProperty(value = "部门名称",required = true)
     @NotBlank(message = "部门名称不能为空")
     private String deptName;
 

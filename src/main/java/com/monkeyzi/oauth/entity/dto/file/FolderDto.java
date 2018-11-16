@@ -13,11 +13,11 @@ public class FolderDto {
     @ApiModelProperty(value = "文件夹Id")
     private String id;
 
-    @ApiModelProperty(value = "文件夹名称")
+    @ApiModelProperty(value = "文件夹名称",required = true)
     @NotBlank(message = "文件夹名称不能为空")
     private String folderName;
 
-    @ApiModelProperty(value = "父Id")
+    @ApiModelProperty(value = "父Id",required = true)
     @NotBlank(message = "父Id不能为空")
     private String parentId;
 

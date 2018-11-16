@@ -22,26 +22,26 @@ public class UserEditDto extends BaseEntity implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
-    @ApiModelProperty(value = "用户名/登录名")
+    @ApiModelProperty(value = "用户名/登录名",required = true)
     @NotBlank(message = "登录名不能为空")
     private String username;
 
-    @ApiModelProperty(value = "密码")
+    @ApiModelProperty(value = "密码",required = true)
     @NotBlank(message = "密码不能为空")
     private String password;
 
-    @ApiModelProperty(value = "昵称/姓名")
+    @ApiModelProperty(value = "昵称/姓名",required = true)
     @NotBlank(message = "姓名不能为空")
     private String nickName;
 
     @ApiModelProperty(value = "描述/详情/备注")
     private String description;
 
-    @ApiModelProperty(value = "手机")
+    @ApiModelProperty(value = "手机",required = true)
     @NotBlank(message = "手机号不能为空")
     private String phone;
 
-    @ApiModelProperty(value = "邮件")
+    @ApiModelProperty(value = "邮件",required = true)
     @NotBlank(message = "邮箱不能为空")
     private String email;
 
@@ -51,18 +51,18 @@ public class UserEditDto extends BaseEntity implements Serializable {
     @ApiModelProperty(value = "用户类型 0普通用户 1管理员")
     private Integer userType;
 
-    @ApiModelProperty(value = "用户编码")
+    @ApiModelProperty(value = "用户编码",required = true)
     @NotBlank(message = "用户编码不能为空")
     private String userCode;
 
     @ApiModelProperty(value = "用户头像")
     private String userAvatar;
 
-    @ApiModelProperty(value = "0女 1男 2保密")
+    @ApiModelProperty(value = "0女 1男 2保密",required = true)
     @NotBlank(message = "性别不能为空")
     private Integer sex;
 
-    @ApiModelProperty(value = "所属部门id")
+    @ApiModelProperty(value = "所属部门id",required = true)
     @NotBlank(message = "所属部门不能为空")
     private String departmentId;
 

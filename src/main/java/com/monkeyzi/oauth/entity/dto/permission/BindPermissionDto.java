@@ -19,11 +19,11 @@ import java.util.List;
 @ApiModel(value = "角色绑定权限参数")
 public class BindPermissionDto implements Serializable {
 
-    @ApiModelProperty(value = "角色id")
+    @ApiModelProperty(value = "角色id",required = true)
     @NotBlank(message = "角色id不能为空")
     private String roleId;
 
-    @ApiModelProperty(value = "权限Id集合")
+    @ApiModelProperty(value = "权限Id集合",required = true)
     @NotBlank(message = "绑定权限不能为空")
     private List<String> permissions;
 }

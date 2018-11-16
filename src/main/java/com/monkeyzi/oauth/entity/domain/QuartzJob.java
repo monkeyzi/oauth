@@ -16,11 +16,11 @@ public class QuartzJob  extends BaseEntity {
     private static final long serialVersionUID = 1L;
 
     @NotBlank(message = "任务类名不能为空")
-    @ApiModelProperty(value = "任务类名")
+    @ApiModelProperty(value = "任务类名",required = true)
     private String jobClassName;
 
     @NotBlank(message = "任务表达式不能为空")
-    @ApiModelProperty(value = "cron表达式")
+    @ApiModelProperty(value = "cron表达式",required = true)
     private String cronExpression;
 
     @ApiModelProperty(value = "参数")

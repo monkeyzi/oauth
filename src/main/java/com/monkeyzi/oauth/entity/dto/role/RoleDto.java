@@ -15,10 +15,10 @@ public class RoleDto implements Serializable {
 
     private static final long serialVersionUID = -3385971785265488527L;
 
-    @ApiModelProperty(value = "角色Id")
+    @ApiModelProperty(value = "角色Id,修改的时候必传")
     private String id;
 
-    @ApiModelProperty(value = "角色名,以ROLE_开头命名")
+    @ApiModelProperty(value = "角色名,以ROLE_开头命名",required = true)
     @Pattern(regexp = "^ROLE_.*", message = "角色名要以ROLE_开头命名")
     @NotBlank(message = "角色名不能为空")
     private String roleName;
@@ -26,7 +26,7 @@ public class RoleDto implements Serializable {
     @NotBlank(message = "角色编码不能为空")
     @Pattern(regexp = "^[A-Za-z0-9]+$", message = "角色编码只能是数字和字母组合")
     @Length(min = 6, max = 20, message = "角色编码长度要在6-20字符之间")
-    @ApiModelProperty(value = "角色编码")
+    @ApiModelProperty(value = "角色编码",required = true)
     private String roleCode;
 
     @ApiModelProperty(value = "角色描述")
