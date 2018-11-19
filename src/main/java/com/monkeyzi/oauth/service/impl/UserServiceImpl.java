@@ -146,7 +146,7 @@ public class UserServiceImpl extends BaseServiceImpl<User> implements UserServic
         mUser.setUserSource(UserSourceEnum.INSERT.getKey());
         mUser.setId(super.generateId());
         //保存用户
-        int  result=userMapper.insertSelective(user);
+        int  result=userMapper.insertSelective(mUser);
         //添加组织关联
         UserDepartment userDept=new UserDepartment();
         //这里可以先查询一下部门存在不存在
@@ -157,6 +157,7 @@ public class UserServiceImpl extends BaseServiceImpl<User> implements UserServic
         userDept.setDeptId(userEditDto.getDepartmentId());
         userDept.setUserId(mUser.getId());
         userDept.setUpdateInfo(loginAuthDto);
+        userDept.setId(super.generateId());
         userDepartmentMapper.insertSelective(userDept);
         //如果角色不为空,绑定角色关系
         if (PublicUtil.isNotEmpty(userEditDto.getRoles())){

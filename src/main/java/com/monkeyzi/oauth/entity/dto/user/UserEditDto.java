@@ -6,6 +6,7 @@ import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 
 import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 import java.io.Serializable;
 import java.util.List;
 
@@ -59,7 +60,7 @@ public class UserEditDto extends BaseEntity implements Serializable {
     private String userAvatar;
 
     @ApiModelProperty(value = "0女 1男 2保密",required = true)
-    @NotBlank(message = "性别不能为空")
+    @NotNull(message = "性别不能为空")
     private Integer sex;
 
     @ApiModelProperty(value = "所属部门id",required = true)
