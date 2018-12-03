@@ -22,15 +22,15 @@ public class ImWebStocketStarter {
     public ImWebStocketStarter(int port, ImMsgHandler imMsgHandler) throws IOException {
         wsServerStarter=new WsServerStarter(port,imMsgHandler);
         serverGroupContext = wsServerStarter.getServerGroupContext();
-        log.info("name===={}",imServerConfig.getIm().getBindPort());
-        serverGroupContext.setName(imServerConfig.getIm().getProtocolName());
+        log.info("name===={}",imServerConfig.getMonkeyIm().getBindPort());
+        serverGroupContext.setName(imServerConfig.getMonkeyIm().getProtocolName());
         serverGroupContext.setServerAioListener(ImServerAioListener.m);
         //设置ip监控
         serverGroupContext.setIpStatListener(ImIpStatListener.m);
         //设置ip监控时间段
         serverGroupContext.ipStats.addDurations(IpStatDuration.IPSTAT_DURATIONS);
         //设置心跳时长
-        serverGroupContext.setHeartbeatTimeout(imServerConfig.getIm().getHeartBeatTimeout());
+        serverGroupContext.setHeartbeatTimeout(imServerConfig.getMonkeyIm().getHeartBeatTimeout());
         //初始化消息类型
 
     }
