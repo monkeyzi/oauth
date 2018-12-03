@@ -120,6 +120,6 @@ monkeyzi:
        # null代表监听所有的ip
       bindIp: null
       bindPort: 9999
-      heartBeatTimeout: 60
+      heartBeatTimeout: 120000
       charset: utf-8
-      protocolName: monkeyzi-socket
+      protocolName: monkeyzi-im

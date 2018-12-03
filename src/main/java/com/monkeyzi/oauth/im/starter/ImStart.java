@@ -18,10 +18,10 @@ public class ImStart {
 
 
     @Bean
-    ImWebStocketStarter imWebStocketStarter() throws Exception {
-        log.info("pppp=========="+imServerConfig.getMonkeyIm());
+    ImWebStocketStarter starter() throws Exception {
+        log.info("pppp=========="+imServerConfig.getIm().getBindPort());
         log.info("启动了---------------------");
-        ImWebStocketStarter starter=new ImWebStocketStarter(imServerConfig.getMonkeyIm().getBindPort(),ImMsgHandler.m);
+        ImWebStocketStarter starter=new ImWebStocketStarter(imServerConfig);
         starter.getWsServerStarter().start();
         return starter;
     }

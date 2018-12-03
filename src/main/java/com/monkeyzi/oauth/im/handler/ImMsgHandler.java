@@ -17,6 +17,7 @@ public class ImMsgHandler implements IWsMsgHandler {
 
     /**
      * 握手的时候走这个方法，可以获取request,cookie等信息
+     * 返回null 会断开链接
      * @param httpRequest
      * @param httpResponse
      * @param channelContext
@@ -28,7 +29,7 @@ public class ImMsgHandler implements IWsMsgHandler {
         log.info("握手了-----------");
         String clientIp=httpRequest.getClientIp();
         log.info("握手获取的ip是 ip={}",clientIp);
-        return null;
+        return httpResponse;
     }
 
     /**
