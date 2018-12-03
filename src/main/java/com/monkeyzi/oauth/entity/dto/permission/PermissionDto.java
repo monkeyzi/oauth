@@ -2,6 +2,7 @@ package com.monkeyzi.oauth.entity.dto.permission;
 
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
+import io.swagger.annotations.ApiParam;
 import lombok.Data;
 
 import javax.validation.constraints.NotBlank;

@@ -197,7 +197,13 @@
             <artifactId>aliyun-sdk-oss</artifactId>
             <version>2.8.3</version>
         </dependency>
-
+        <!--t-io websocket 即时通讯-->
+        <dependency>
+            <groupId>org.t-io</groupId>
+            <artifactId>tio-websocket-server</artifactId>
+            <version>3.2.2.v20181122-RELEASE</version>
+        </dependency>
+        <!--验证-->
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-validation</artifactId>

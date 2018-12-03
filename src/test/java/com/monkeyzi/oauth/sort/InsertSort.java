@@ -1,6 +1,9 @@
 package com.monkeyzi.oauth.sort;
 
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
 
 public class InsertSort {
 
@@ -33,8 +36,15 @@ public class InsertSort {
     }
 
     public static void main(String[] args) {
-        int[] arr={33,2,3,45,55,1};
-        sort2(arr);
-        Arrays.stream(arr).forEach(a-> System.out.println(a));
+        List<String> list=new ArrayList<>();
+        list.add("5");
+        list.add("4");
+        list.add("78");
+        list.add("8888");
+        int from=2,to=3;
+        list.add(from,"8888");
+        System.out.println(list);
+        list.remove(to+1);
+        System.out.println(list);
     }
 }
