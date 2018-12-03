@@ -77,7 +77,7 @@ public class AuthorizationResourceServer  extends ResourceServerConfigurerAdapte
                 //认证页面
                 .loginPage("/auth/needLogin")
                 //登录请求url
-                .loginProcessingUrl("/auth/login")
+                .loginProcessingUrl("/auth/token")
                 .permitAll()
                 //成功处理类
                 .successHandler(successHandler)

@@ -59,6 +59,7 @@ servlet:
 ignored:
   urls:
     - /auth/**
+    - /oauth/**
     - /user/**
     - /dept/**
     - /druid/**
@@ -119,3 +120,11 @@ monkeyzi:
       loginTimeLimit: 5
       # 错误超过次数后多少分钟后才能继续登录（分钟）
       loginAfterTime: 10
+   #即时通讯
+   monkeyIm:
+    # null代表监听所有的ip
+     bindIp: null
+     bindPort: 9999
+     heartBeatTimeout: 60
+     charset: utf-8
+     protocolName: monkeyzi-im
