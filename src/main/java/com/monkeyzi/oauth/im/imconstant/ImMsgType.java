@@ -3,7 +3,7 @@ package com.monkeyzi.oauth.im.imconstant;
 /**
  * 消息推送类型
  */
-public interface MsgType {
+public interface ImMsgType {
     /**
      * 单聊
      */

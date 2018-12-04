@@ -54,7 +54,7 @@ public class ImMsgHandler implements IWsMsgHandler {
      */
     @Override
     public Object onBytes(WsRequest wsRequest, byte[] bytes, ChannelContext channelContext) throws Exception {
-        log.info("字符消息 byte={}",bytes);
+        log.info("字节消息 byte={}",bytes);
         return null;
     }
 
@@ -82,6 +82,7 @@ public class ImMsgHandler implements IWsMsgHandler {
     @Override
     public Object onText(WsRequest wsRequest, String s, ChannelContext channelContext) throws Exception {
         log.info("字符消息 s={}",s);
+        //解析消息，获取消息类型
         return null;
     }
 }
