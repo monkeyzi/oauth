@@ -81,7 +81,7 @@ mybatis:
 mapper:
   mappers: com.monkeyzi.oauth.base.mybatis.MyMapper
   not-empty: false
-  identity: MYSQL
+  identity:  MYSQL
 
 #oauth2 client配置
 monkeyzi:

@@ -3,8 +3,6 @@ package com.monkeyzi.oauth.utils;
 import lombok.extern.slf4j.Slf4j;
 
 /**
- * 原作者 zzxadi https://github.com/zzxadi/Snowflake-IdWorker
- * @author Exrickx
  */
 @Slf4j
 public class SnowFlakeUtil {
@@ -97,10 +95,10 @@ public class SnowFlakeUtil {
         return System.currentTimeMillis();
     }
 
-   /* public static void main(String[] args) {
-        for(int i=0;i<100;i++){
-            SnowFlakeUtil snowFlakeUtil = SnowFlakeUtil.getFlowIdInstance();
-            System.out.println(snowFlakeUtil.nextId());
-        }
-    }*/
+   public static void main(String[] args) {
+       for (int i = 0; i < 1000000; i++) {
+           SnowFlakeUtil snowFlakeUtil = SnowFlakeUtil.getFlowIdInstance();
+           System.out.println(snowFlakeUtil.nextId());
+       }
+   }
 }
