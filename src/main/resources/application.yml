@@ -42,7 +42,6 @@ spring:
     password: ENC(sAxR1yuo9TKgVO4rpYtgEw==)
     database: 0
     port: 6379
-    timeout: 5000ms
 
 
 
@@ -59,7 +58,6 @@ servlet:
 ignored:
   urls:
     - /auth/**
-    - /user/**
     - /druid/**
     - /swagger-ui.html
     - /swagger-resources/**

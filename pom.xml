@@ -41,13 +41,6 @@
             <artifactId>spring-security-jwt</artifactId>
             <version>1.0.9.RELEASE</version>
         </dependency>
-        <!-- MybatisPlus -->
-       <!-- <dependency>
-            <groupId>com.baomidou</groupId>
-            <artifactId>mybatis-plus-boot-starter</artifactId>
-            <version>2.2.0</version>
-        </dependency>
--->
         <!--通用mapper-->
         <dependency>
             <groupId>tk.mybatis</groupId>
@@ -102,12 +95,12 @@
         <dependency>
             <groupId>io.springfox</groupId>
             <artifactId>springfox-swagger-ui</artifactId>
-            <version>2.7.0</version>
+            <version>2.9.2</version>
         </dependency>
         <dependency>
             <groupId>io.springfox</groupId>
             <artifactId>springfox-swagger2</artifactId>
-            <version>2.7.0</version>
+            <version>2.9.2</version>
         </dependency>
         <!-- Gson -->
         <dependency>
@@ -152,12 +145,6 @@
             <artifactId>modelmapper</artifactId>
             <version>2.3.0</version>
         </dependency>
-        <!-- 热更新 -->
-        <!--<dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-devtools</artifactId>
-            <optional>true</optional>
-        </dependency>-->
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-test</artifactId>
@@ -208,13 +195,11 @@
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-validation</artifactId>
-            <version>2.0.3.RELEASE</version>
         </dependency>
         <!--配置-->
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-configuration-processor</artifactId>
-            <version>2.0.3.RELEASE</version>
         </dependency>
         <dependency>
             <groupId>org.springframework.boot</groupId>
