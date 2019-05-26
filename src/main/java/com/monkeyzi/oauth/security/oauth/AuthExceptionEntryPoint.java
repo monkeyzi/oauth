@@ -27,7 +27,6 @@ public class AuthExceptionEntryPoint  implements AuthenticationEntryPoint {
     public void commence(HttpServletRequest httpServletRequest, HttpServletResponse response, AuthenticationException e) throws IOException, ServletException {
 
         Throwable cause = e.getCause();
-        response.setStatus(HttpStatus.UNAUTHORIZED.value());
         if (cause instanceof InvalidTokenException){
             log.error("不合法的token cause={}",cause.getMessage());
             ResponseJsonUtil.out(response,ResponseJsonUtil.map(false,ErrorCodeEnum.GL401.getCode(),"token不合法或已过期",null));

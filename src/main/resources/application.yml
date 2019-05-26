@@ -7,8 +7,6 @@ jasypt:
     password: monkeyzi
 
 spring:
-  profiles:
-     active: dev
   mvc:
     throw-exception-if-no-handler-found: true
   resources:
@@ -20,7 +18,7 @@ spring:
     # Jasypt加密 可到common-utils中找到JasyptUtil加解密工具类生成加密结果 格式为ENC(加密结果)
     password: ENC(ly6ALRqFlY9vVwnabWCg+5j/J7PdUuHe)
     type: com.alibaba.druid.pool.DruidDataSource
-    driverClassName: com.mysql.jdbc.Driver
+    driverClassName: com.mysql.cj.jdbc.Driver
     logSlowSql: true
     # Druid StatViewServlet配置
     druid:
