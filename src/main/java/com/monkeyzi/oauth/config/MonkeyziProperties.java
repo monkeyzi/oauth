@@ -12,7 +12,7 @@ import org.springframework.stereotype.Component;
  * @blog http://www.monkeyzi.xin
  * @description:
  */
-@ConfigurationProperties(prefix = "monkeyzi.task")
+@ConfigurationProperties(prefix = "monkeyzi")
 @Getter
 @Setter
 @Component

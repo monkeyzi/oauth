@@ -4,23 +4,28 @@ import com.github.pagehelper.PageInfo;
 import com.monkeyzi.oauth.annotation.LogAnnotation;
 import com.monkeyzi.oauth.base.controller.BaseController;
 import com.monkeyzi.oauth.common.R;
+import com.monkeyzi.oauth.entity.domain.Monkey;
 import com.monkeyzi.oauth.entity.dto.LoginAuthDto;
 import com.monkeyzi.oauth.entity.dto.roleuser.BindUserRolesDto;
 import com.monkeyzi.oauth.entity.dto.user.UserEditDto;
 import com.monkeyzi.oauth.entity.dto.user.UserQueryDto;
 import com.monkeyzi.oauth.entity.vo.roleuser.BindRoleVo;
 import com.monkeyzi.oauth.enums.UserStatusEnum;
+import com.monkeyzi.oauth.service.MonkeyService;
 import com.monkeyzi.oauth.service.UserService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.task.TaskExecutor;
 import org.springframework.http.MediaType;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
+import javax.annotation.Resource;
 import javax.validation.Valid;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -36,6 +41,10 @@ public class UserController extends BaseController {
 
     @Autowired
     private UserService userService;
+    @Autowired
+    private MonkeyService monkeyService;
+    @Resource
+    private TaskExecutor taskExecutor;
 
 
     @PostMapping(value = "/queryUserListWithPage")
@@ -124,7 +133,36 @@ public class UserController extends BaseController {
     }
 
 
+    @ResponseBody
+    @RequestMapping("/test")
+    public void test(){
+        int PATCH=300;
+        List<Monkey>  list=new ArrayList<>();
+        for (int i=0;i<10000;i++)
+        {
+            Monkey m=new Monkey();
+            m.setId(i+"");
+            m.setName("name-"+i);
+            list.add(m);
+        }
+        int times= (int) Math.ceil(list.size()/Double.valueOf(PATCH));
+        for (int i=0;i<times;i++){
+            final int j=i;
+            taskExecutor.execute(()->{
+                List<Monkey> monkeyList=list.subList(j*PATCH,
+                        Math.min((j+1)*PATCH,
+                                list.size()));
+                System.out.println("插入数据："+monkeyList.size());
+                String threadName=Thread.currentThread().getName();
+                for (Monkey mm:monkeyList){
+                    System.out.println(threadName);
+                    monkeyService.insertToDb(mm);
+                    System.out.println(threadName+"====mm="+mm.getName());
 
+                }
+            });
+        }
+    }
 
 
 
