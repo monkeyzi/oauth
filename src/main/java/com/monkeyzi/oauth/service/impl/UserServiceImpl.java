@@ -115,7 +115,7 @@ public class UserServiceImpl extends BaseServiceImpl<User> implements UserServic
     @Override
     @Transactional(readOnly = true,rollbackFor = Exception.class)
     public PageInfo queryUserListWithPage(UserQueryDto userQueryDto) {
-        userQueryDto.setOrderBy(" last_login_time desc");
+        userQueryDto.setOrderBy("create_time desc,last_login_time desc");
         if (StringUtils.isNotEmpty(userQueryDto.getEndTime())){
             userQueryDto.setEndTime(userQueryDto.getEndTime()+" 23:59:59");
         }
